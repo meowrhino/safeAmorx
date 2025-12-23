@@ -1,7 +1,7 @@
 {
   "about": [
     {
-      "titulo": "Quién somos",
+      "titulo": "Quien somos",
       "bloques": [
         {
           "subtitulo": "",
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "titulo": "Qué hacemos",
+      "titulo": "Que hacemos",
       "bloques": [
         {
           "subtitulo": "",
@@ -27,7 +27,7 @@
       ]
     },
     {
-      "titulo": "En qué creemos",
+      "titulo": "En que creemos",
       "bloques": [
         {
           "subtitulo": "Riesgo y placer en equilibrio.",
@@ -36,19 +36,19 @@
           ]
         },
         {
-          "subtitulo": "Club como cultura y espacio de transformación",
+          "subtitulo": "Club como cultura y espacio de transformacion",
           "texto": [
             "El Club es un espacio cultural de valor, donde se generan experiencias transformadoras únicas. Queremos defenderlo."
           ]
         },
         {
-          "subtitulo": "Pedagogía preventiva",
+          "subtitulo": "Pedagogia preventiva",
           "texto": [
             "En el hosting explicamos por qué ciertas actitudes no son bienvenidas. En sala, conversamos con quien necesita un recordatorio. Creemos que la concienciación y corresponsabilidad pueden transformar el espacio de fiesta."
           ]
         },
         {
-          "subtitulo": "Acompañamiento sin juicio.",
+          "subtitulo": "Acompanamiento sin juicio.",
           "texto": [
             "Queremos entender lo que sucede, no venimos a moralizar. Aún así, tenemos muy claro que las violencias no son bienvenidas y las tratamos con determinación."
           ]
@@ -86,7 +86,7 @@
   ],
   "booking": [
     {
-      "titulo": "Introducción",
+      "titulo": "Introduccion",
       "bloques": [
         {
           "subtitulo": "",
@@ -97,7 +97,7 @@
       ]
     },
     {
-      "titulo": "¿Por qué un awareness team?",
+      "titulo": "¿Por que un awareness team?",
       "bloques": [
         {
           "subtitulo": "",
@@ -110,7 +110,7 @@
       ]
     },
     {
-      "titulo": "Nuestra metodología de trabajo",
+      "titulo": "Nuestra metodologia de trabajo",
       "bloques": [
         {
           "subtitulo": "Hosting",
@@ -127,14 +127,14 @@
           ]
         },
         {
-          "subtitulo": "Materiales de comunicación y visibilización",
+          "subtitulo": "Materiales de comunicacion y visibilizacion",
           "texto": [
             "Traemos flyers informativos y colgamos carteles por toda la sala. Los materiales comunican cómo identificar al equipo (pulseras rosas luminosas), dónde encontrarnos, y transmiten los códigos de conducta del evento: respeto, corresponsabilidad, inclusión y consciencia. También incluyen mensajes específicos sobre el uso del espacio y las interacciones.",
             "Esta comunicación visual complementa nuestro trabajo en sala, ofreciendo un servicio 360 donde el público puede acceder a la información tanto a través de nosotras como de forma autónoma."
           ]
         },
         {
-          "subtitulo": "Registro y análisis de datos",
+          "subtitulo": "Registro y analisis de datos",
           "texto": [
             "Registramos cada intervención para identificar patrones, anticipar situaciones y afinar continuamente nuestros protocolos. Esto nos permite entender las necesidades de cada fiesta y público y adaptarnos a ellas. En un futuro también nos permitirá hacer valoraciones del impacto de nuestro trabajo sobre los clubs, colectivos y festivales con los que colaboramos.",
             "En Safe Amorx estamos en evolución constante. Creemos en una construcción colectiva; escuchamos las valoraciones de nuestros colaboradores, de nuestro equipo y del público."
@@ -152,7 +152,7 @@
           ]
         },
         {
-          "subtitulo": "Colaboración perduradera en clubs o festivales",
+          "subtitulo": "Colaboracion perduradera en clubs o festivales",
           "texto": [
             "Aseguramos un equipo fijo para vuestros eventos regulares que conozca bien el espacio y la comunidad. Construimos un protocolo personalizado mediante jornadas de prueba, análisis de datos del club/festival y encuestas a público y trabajadores. Este protocolo se adapta a vuestras necesidades y está en constante evolución. Ofrecemos también una capacitación a vuestro equipo (seguridad, staff) en los protocolos de awareness."
           ]
@@ -172,14 +172,14 @@
       ]
     },
     {
-      "titulo": "Proceso de contratación",
+      "titulo": "Proceso de contratacion",
       "bloques": [
         {
           "subtitulo": "",
           "texto": [
-            "• Escribidnos un email con información sobre vuestro evento: nombre, fecha, tipo de evento, cantidad de público esperada, detalles del espacio.",
-            "• Os enviamos una propuesta de colaboración, con un presupuesto adaptado a vuestro colectivo, club o festival. En caso de colaboraciones más perduraderas, planeamos una reunión.",
-            "• Después del evento, enviamos un informe de valoración y se puede planear una reunión de feedback."
+            "Escribidnos un email con información sobre vuestro evento: nombre, fecha, tipo de evento, cantidad de público esperada, detalles del espacio.",
+            "Os enviamos una propuesta de colaboración, con un presupuesto adaptado a vuestro colectivo, club o festival. En caso de colaboraciones más perduraderas, planeamos una reunión.",
+            "Después del evento, enviamos un informe de valoración y se puede planear una reunión de feedback."
           ]
         }
       ]
@@ -199,7 +199,7 @@
   ],
   "cv": [
     {
-      "titulo": "Introducción",
+      "titulo": "Introduccion",
       "bloques": [
         {
           "subtitulo": "",
@@ -246,7 +246,7 @@
       ]
     },
     {
-      "titulo": "Me Siento Extraña",
+      "titulo": "Me Siento Extrana",
       "bloques": [
         {
           "subtitulo": "",
