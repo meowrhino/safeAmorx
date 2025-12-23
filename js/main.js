@@ -21,26 +21,22 @@
         { name: 'booking', url: 'booking.html', isHome: false }
     ];
 
-    function getCellsInMaxDimension() {
+    function getCellsPerAxis() {
         return window.matchMedia('(max-width: 768px)').matches
             ? CONFIG.CELLS_IN_MAX_DIMENSION_MOBILE
             : CONFIG.CELLS_IN_MAX_DIMENSION;
     }
 
     function calculateGridSize(containerWidth, containerHeight) {
-        const cellsInMaxDimension = getCellsInMaxDimension();
-        const maxDim = Math.max(containerWidth, containerHeight);
-        const minDim = Math.min(containerWidth, containerHeight);
-        const cellSize = Math.max(1, Math.floor(maxDim / cellsInMaxDimension));
-        const cellsInMinDim = Math.max(
-            1,
-            Math.min(cellsInMaxDimension, Math.floor(minDim / cellSize))
-        );
+        const cellsPerAxis = getCellsPerAxis();
+        const cellWidth = Math.max(1, Math.floor(containerWidth / cellsPerAxis));
+        const cellHeight = Math.max(1, Math.floor(containerHeight / cellsPerAxis));
 
         return {
-            cols: containerWidth > containerHeight ? cellsInMaxDimension : cellsInMinDim,
-            rows: containerWidth > containerHeight ? cellsInMinDim : cellsInMaxDimension,
-            cellSize: cellSize
+            cols: cellsPerAxis,
+            rows: cellsPerAxis,
+            cellWidth,
+            cellHeight
         };
     }
 
@@ -365,10 +361,13 @@
         const rect = container.getBoundingClientRect();
         const gridSize = calculateGridSize(rect.width, rect.height);
 
-        container.style.width = `${gridSize.cols * gridSize.cellSize}px`;
-        container.style.height = `${gridSize.rows * gridSize.cellSize}px`;
-        container.style.gridTemplateColumns = `repeat(${gridSize.cols}, ${gridSize.cellSize}px)`;
-        container.style.gridTemplateRows = `repeat(${gridSize.rows}, ${gridSize.cellSize}px)`;
+        const gridWidth = gridSize.cols * gridSize.cellWidth;
+        const gridHeight = gridSize.rows * gridSize.cellHeight;
+
+        container.style.width = `${gridWidth}px`;
+        container.style.height = `${gridHeight}px`;
+        container.style.gridTemplateColumns = `repeat(${gridSize.cols}, ${gridSize.cellWidth}px)`;
+        container.style.gridTemplateRows = `repeat(${gridSize.rows}, ${gridSize.cellHeight}px)`;
 
         const snappedRect = container.getBoundingClientRect();
         const dx = Math.round(snappedRect.left) - snappedRect.left;
