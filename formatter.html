@@ -39,37 +39,52 @@
     .panel-header h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px; }
     .panel-actions { display: flex; gap: 10px; align-items: center; }
     .sections-container, .preview-container { padding: 18px 20px 24px; overflow-y: auto; }
-    .section-card { background: var(--color-soft); border: 1px solid var(--color-border); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
-    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .section-card { background: transparent; border: none; border-radius: 0; padding: 0; margin-bottom: 14px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
     .section-number { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); }
-    .section-actions { display: flex; gap: 8px; align-items: center; }
+    .section-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .indent-control { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--color-muted); }
+    .indent-label { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.75rem; }
+    .indent-range { width: 120px; accent-color: var(--color-strong); }
+    .indent-value { font-variant-numeric: tabular-nums; color: var(--color-strong); min-width: 3ch; text-align: right; }
     .form-group { margin-bottom: 14px; }
     .form-label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.95rem; color: var(--color-muted); }
-    .form-label.optional::after { content: " (opcional)"; font-weight: 400; }
+    .form-label.optional::after { content: ""; }
     .form-input, .form-textarea { width: 100%; border: 1px solid var(--color-border); border-radius: 10px; padding: 10px 12px; font-size: 1rem; font-family: var(--font-main); background: var(--color-surface); color: var(--color-text); transition: border-color 0.2s ease, box-shadow 0.2s ease; }
     .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--color-strong); box-shadow: 0 0 0 2px rgba(15, 12, 10, 0.08); }
     .form-textarea { min-height: 80px; resize: vertical; }
     .paragraph-list, .logo-list { display: flex; flex-direction: column; gap: 10px; }
     .block-list { display: flex; flex-direction: column; gap: 12px; }
     .block-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 12px; }
-    .block-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .block-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 10px; flex-wrap: wrap; }
     .block-label { font-size: 0.9rem; color: var(--color-muted); }
-    .paragraph-item, .logo-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 12px; }
-    .paragraph-header, .logo-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .paragraph-item { background: transparent; border: none; border-radius: 0; padding: 0; }
+    .logo-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 12px; }
+    .paragraph-item .form-textarea { border-radius: 0; border: 0; background: transparent; }
+    .paragraph-header, .logo-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
     .paragraph-label, .logo-label { font-size: 0.9rem; color: var(--color-muted); }
+    .paragraph-actions { display: flex; gap: 6px; align-items: center; }
     .logo-fields { display: flex; flex-direction: column; gap: 10px; }
+    .toggle-row { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; color: var(--color-muted); }
+    .toggle-row input { width: 18px; height: 18px; accent-color: var(--color-strong); }
+    .image-list { display: flex; flex-direction: column; gap: 10px; }
+    .image-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 12px; }
+    .image-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .image-label { font-size: 0.9rem; color: var(--color-muted); }
+    .image-fields { display: flex; flex-direction: column; gap: 10px; }
     .btn { border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); border-radius: 10px; padding: 10px 14px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
     .btn:hover { background: #f0ebe4; transform: translateY(-1px); }
     .btn:active { transform: translateY(0); }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
     .btn:disabled:hover { background: var(--color-surface); }
-    .btn.solid { background: var(--color-strong); color: #ffffff; border-color: var(--color-strong); }
-    .btn.solid:hover { background: #0c0907; }
+    .btn.solid { background: transparent; color: var(--color-strong); border: none; }
+    .btn.solid:hover { background: #f0ebe4; }
     .btn.ghost { background: transparent; }
     .btn-small { padding: 8px 12px; font-size: 0.95rem; }
     .btn-icon { padding: 6px 10px; }
-    .btn-add { width: 100%; border-style: dashed; color: var(--color-muted); background: transparent; }
+    .btn-add { width: 100%; border: none; color: var(--color-muted); background: transparent; }
     .btn-add:hover { background: #f0ebe4; color: var(--color-text); }
+    .btn-add-block { font-weight: 700; }
     .btn-danger { border-color: #d33643; color: #d33643; }
     .btn-danger:hover { background: rgba(211, 54, 67, 0.08); }
     .preview-container { background: var(--color-surface); }
@@ -78,8 +93,21 @@
     .preview-section h2 { font-size: 1.4rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
     .preview-section h3 { font-size: 1.05rem; font-weight: 600; color: var(--color-muted); margin-bottom: 8px; }
     .preview-section p { color: var(--color-text); margin-bottom: 10px; }
+    .preview-block-header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .preview-block-header h3 { margin-bottom: 0; }
+    .preview-toggle { border: 1px solid var(--color-border); background: transparent; color: var(--color-muted); border-radius: 999px; padding: 2px 8px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; }
+    .preview-block.is-collapsed .preview-paragraphs { display: none; }
+    .preview-block + .preview-block { margin-top: 12px; }
+    .preview-block { --preview-paragraph-indent: 0; }
+    .preview-paragraphs p { margin-left: var(--preview-paragraph-indent); }
+    .preview-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; }
+    .preview-image-item { border: none; background: transparent; padding: 0; cursor: zoom-in; }
+    .preview-image-thumb { width: 100%; display: block; border-radius: 8px; border: 1px solid var(--color-border); }
     .preview-logos { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
     .preview-logo { border: 1px solid var(--color-border); border-radius: 8px; padding: 6px 10px; background: var(--color-soft); color: var(--color-muted); font-size: 0.95rem; }
+    .preview-lightbox { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 20; padding: 20px; }
+    .preview-lightbox.is-visible { opacity: 1; pointer-events: auto; }
+    .preview-lightbox-image { max-width: min(92vw, 900px); max-height: 90vh; object-fit: contain; border-radius: 10px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4); }
     .formatter-footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 16px 32px 28px; border-top: 1px solid var(--color-border); background: var(--color-bg); }
     .footer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
     .footer-actions.footer-left { justify-content: flex-start; }
@@ -260,21 +288,56 @@
           data.cv = data.curriculum;
           delete data.curriculum;
         }
+        const normalizeIndentValue = (value) => {
+          if (typeof value === 'number' && Number.isFinite(value)) {
+            return Math.min(50, Math.max(0, value));
+          }
+          if (typeof value === 'string') {
+            const trimmed = value.trim();
+            if (!trimmed) return 0;
+            if (/^\d+(\.\d+)?%$/.test(trimmed) || /^\d+(\.\d+)?$/.test(trimmed)) {
+              const parsed = Number.parseFloat(trimmed);
+              if (Number.isFinite(parsed)) {
+                return Math.min(50, Math.max(0, parsed));
+              }
+            }
+          }
+          return 0;
+        };
         const normalizeSection = (section) => {
           if (!section || typeof section !== 'object') {
-            return { titulo: '', bloques: [{ subtitulo: '', texto: [] }] };
+            return { titulo: '', bloques: [{ subtitulo: '', texto: [], desplegable: false, sangria: 0 }], imagenes: [], logos: [] };
           }
           const normalized = { ...section };
+          const sectionIndent = normalizeIndentValue(normalized.sangria);
+          delete normalized.sangria;
+          normalized.imagenes = Array.isArray(normalized.imagenes)
+            ? normalized.imagenes.map(image => ({
+              src: typeof image.src === 'string' ? image.src : '',
+              alt: typeof image.alt === 'string' ? image.alt : ''
+            }))
+            : [];
+          normalized.logos = Array.isArray(normalized.logos)
+            ? normalized.logos.map(logo => ({
+              src: typeof logo.src === 'string' ? logo.src : '',
+              link: typeof logo.link === 'string' ? logo.link : '',
+              alt: typeof logo.alt === 'string' ? logo.alt : ''
+            }))
+            : [];
           if (!Array.isArray(normalized.bloques)) {
             const subtitulo = typeof normalized.subtitulo === 'string' ? normalized.subtitulo : '';
             const texto = Array.isArray(normalized.texto) ? normalized.texto : [];
-            normalized.bloques = [{ subtitulo, texto }];
+            normalized.bloques = [{ subtitulo, texto, desplegable: false, sangria: sectionIndent }];
             delete normalized.subtitulo;
             delete normalized.texto;
           } else {
             normalized.bloques = normalized.bloques.map(block => ({
               subtitulo: typeof block.subtitulo === 'string' ? block.subtitulo : '',
-              texto: Array.isArray(block.texto) ? block.texto : []
+              texto: Array.isArray(block.texto) ? block.texto : [],
+              desplegable: typeof block.desplegable === 'boolean' ? block.desplegable : false,
+              sangria: normalizeIndentValue(
+                (typeof block.sangria === 'number' || typeof block.sangria === 'string') ? block.sangria : sectionIndent
+              )
             }));
           }
           return normalized;
@@ -304,6 +367,8 @@
     // ============================================================================
     const Preview = {
       container: null,
+      lightbox: null,
+      lightboxKeyHandlerAttached: false,
 
       init() {
         this.container = document.getElementById('previewContainer');
@@ -324,7 +389,72 @@
         });
       },
 
-      createSectionPreview(section) {
+      normalizeIndent(value) {
+        if (value === null || value === undefined) return '';
+        if (typeof value === 'number' && Number.isFinite(value)) {
+          const clamped = Math.min(50, Math.max(0, value));
+          return `${clamped}%`;
+        }
+        if (typeof value === 'string' && value.trim()) {
+          const trimmed = value.trim();
+          if (/^\d+(\.\d+)?%$/.test(trimmed) || /^\d+(\.\d+)?$/.test(trimmed)) {
+            const parsed = Number.parseFloat(trimmed);
+            if (Number.isFinite(parsed)) {
+              const clamped = Math.min(50, Math.max(0, parsed));
+              return `${clamped}%`;
+            }
+          }
+        }
+        return '';
+      },
+
+      ensureLightbox() {
+        if (this.lightbox) return this.lightbox;
+        const overlay = document.createElement('div');
+        overlay.className = 'preview-lightbox';
+        overlay.setAttribute('aria-hidden', 'true');
+
+        const img = document.createElement('img');
+        img.className = 'preview-lightbox-image';
+        img.alt = '';
+        overlay.appendChild(img);
+
+        overlay.addEventListener('click', (event) => {
+          if (event.target === overlay) this.closeLightbox();
+        });
+
+        if (!this.lightboxKeyHandlerAttached) {
+          document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') this.closeLightbox();
+          });
+          this.lightboxKeyHandlerAttached = true;
+        }
+
+        document.body.appendChild(overlay);
+        this.lightbox = overlay;
+        return overlay;
+      },
+
+      openLightbox(src, altText) {
+        if (!src) return;
+        const overlay = this.ensureLightbox();
+        const img = overlay.querySelector('img');
+        img.src = src;
+        img.alt = altText || '';
+        overlay.classList.add('is-visible');
+        overlay.setAttribute('aria-hidden', 'false');
+      },
+
+      closeLightbox() {
+        if (!this.lightbox) return;
+        const img = this.lightbox.querySelector('img');
+        img.src = '';
+        img.alt = '';
+        this.lightbox.classList.remove('is-visible');
+        this.lightbox.setAttribute('aria-hidden', 'true');
+      },
+
+      createSectionPreview(section, index) {
         const div = document.createElement('div');
         div.className = 'preview-section';
 
@@ -335,21 +465,92 @@
         }
 
         const blocks = this.normalizeBlocks(section);
-        blocks.forEach(block => {
-          if (block.subtitulo && block.subtitulo.trim()) {
-            const h3 = document.createElement('h3');
-            h3.textContent = block.subtitulo;
-            div.appendChild(h3);
+        blocks.forEach((block, blockIndex) => {
+          const blockWrapper = document.createElement('div');
+          blockWrapper.className = 'preview-block';
+          const blockIndent = this.normalizeIndent(block.sangria);
+          if (blockIndent) {
+            blockWrapper.style.setProperty('--preview-paragraph-indent', blockIndent);
           }
 
+          const paragraphsWrapper = document.createElement('div');
+          paragraphsWrapper.className = 'preview-paragraphs';
+          paragraphsWrapper.id = `preview-block-${index}-${blockIndex}`;
+
+          let hasParagraphs = false;
+          let hasHeader = false;
           block.texto.forEach(parrafo => {
             if (typeof parrafo === 'string' && parrafo.trim()) {
               const p = document.createElement('p');
               p.textContent = parrafo;
-              div.appendChild(p);
+              paragraphsWrapper.appendChild(p);
+              hasParagraphs = true;
             }
           });
+
+          if (block.subtitulo && block.subtitulo.trim()) {
+            const header = document.createElement('div');
+            header.className = 'preview-block-header';
+            const h3 = document.createElement('h3');
+            h3.textContent = block.subtitulo;
+            header.appendChild(h3);
+            hasHeader = true;
+
+            if (block.desplegable && hasParagraphs) {
+              const toggle = document.createElement('button');
+              toggle.type = 'button';
+              toggle.className = 'preview-toggle';
+              toggle.setAttribute('aria-expanded', 'false');
+              toggle.setAttribute('aria-controls', paragraphsWrapper.id);
+              toggle.textContent = 'ver más';
+
+              toggle.addEventListener('click', () => {
+                const isCollapsed = blockWrapper.classList.toggle('is-collapsed');
+                toggle.setAttribute('aria-expanded', String(!isCollapsed));
+                toggle.textContent = isCollapsed ? 'ver más' : 'ver menos';
+              });
+
+              blockWrapper.classList.add('is-collapsed');
+              header.appendChild(toggle);
+            }
+
+            blockWrapper.appendChild(header);
+          }
+
+          if (hasHeader || hasParagraphs) {
+            if (hasParagraphs) {
+              blockWrapper.appendChild(paragraphsWrapper);
+            }
+            div.appendChild(blockWrapper);
+          }
         });
+
+        if (section.imagenes && Array.isArray(section.imagenes) && section.imagenes.length > 0) {
+          const imagesDiv = document.createElement('div');
+          imagesDiv.className = 'preview-images';
+
+          section.imagenes.forEach(image => {
+            if (!image || !image.src) return;
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'preview-image-item';
+
+            const img = document.createElement('img');
+            img.src = image.src;
+            img.alt = image.alt || '';
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            img.className = 'preview-image-thumb';
+
+            item.appendChild(img);
+            item.addEventListener('click', () => this.openLightbox(image.src, image.alt || ''));
+            imagesDiv.appendChild(item);
+          });
+
+          if (imagesDiv.children.length > 0) {
+            div.appendChild(imagesDiv);
+          }
+        }
 
         if (section.logos && Array.isArray(section.logos) && section.logos.length > 0) {
           const logosDiv = document.createElement('div');
@@ -375,7 +576,9 @@
             subtitulo: typeof block.subtitulo === 'string' ? block.subtitulo : '',
             texto: Array.isArray(block.texto)
               ? block.texto
-              : (typeof block.texto === 'string' ? [block.texto] : [])
+              : (typeof block.texto === 'string' ? [block.texto] : []),
+            desplegable: typeof block.desplegable === 'boolean' ? block.desplegable : false,
+            sangria: (typeof block.sangria === 'number' || typeof block.sangria === 'string') ? block.sangria : 0
           }));
         }
 
@@ -384,7 +587,7 @@
           ? section.texto
           : (typeof section.texto === 'string' ? [section.texto] : []);
 
-        return [{ subtitulo, texto }];
+        return [{ subtitulo, texto, desplegable: false, sangria: 0 }];
       },
 
       clear() {
@@ -428,23 +631,57 @@
 
         const header = document.createElement('div');
         header.className = 'section-header';
-        header.innerHTML = `
-          <span class="section-number">Sección #${index + 1}</span>
-          <div class="section-actions">
-            <button class="btn btn-icon btn-small" onclick="Editor.moveSection(${index}, -1)" title="Mover arriba" ${index === 0 ? 'disabled' : ''}>↑</button>
-            <button class="btn btn-icon btn-small" onclick="Editor.moveSection(${index}, 1)" title="Mover abajo" ${index === this.data[this.currentCategory].length - 1 ? 'disabled' : ''}>↓</button>
-            <button class="btn btn-icon btn-small btn-danger" onclick="Editor.deleteSection(${index})" title="Eliminar sección">🗑️</button>
-          </div>
-        `;
+        const label = document.createElement('span');
+        label.className = 'section-number';
+        label.textContent = `Sección #${index + 1}`;
+        header.appendChild(label);
+
+        const actions = document.createElement('div');
+        actions.className = 'section-actions';
+
+        const moveUpBtn = document.createElement('button');
+        moveUpBtn.className = 'btn btn-icon btn-small';
+        moveUpBtn.title = 'Mover arriba';
+        moveUpBtn.textContent = '↑';
+        moveUpBtn.disabled = index === 0;
+        moveUpBtn.addEventListener('click', () => this.moveSection(index, -1));
+        actions.appendChild(moveUpBtn);
+
+        const moveDownBtn = document.createElement('button');
+        moveDownBtn.className = 'btn btn-icon btn-small';
+        moveDownBtn.title = 'Mover abajo';
+        moveDownBtn.textContent = '↓';
+        moveDownBtn.disabled = index === this.data[this.currentCategory].length - 1;
+        moveDownBtn.addEventListener('click', () => this.moveSection(index, 1));
+        actions.appendChild(moveDownBtn);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-icon btn-small btn-danger';
+        deleteBtn.title = 'Eliminar sección';
+        deleteBtn.textContent = '🗑️';
+        deleteBtn.addEventListener('click', () => this.deleteSection(index));
+        actions.appendChild(deleteBtn);
+
+        header.appendChild(actions);
         card.appendChild(header);
 
-        card.appendChild(this.createFormGroup('Título (H2)', 'text', section.titulo || '', (value) => this.updateSection(index, 'titulo', value)));
+        card.appendChild(
+          this.createFormGroup(
+            '',
+            'text',
+            section.titulo || '',
+            (value) => this.updateSection(index, 'titulo', value),
+            false,
+            'Título'
+          )
+        );
         card.appendChild(this.createBlocksGroup(section, index));
+        card.appendChild(this.createImagesGroup(section.imagenes || [], index));
         card.appendChild(this.createLogosGroup(section.logos || [], index));
         return card;
       },
 
-      createFormGroup(label, type, value, onChange, optional = false) {
+      createFormGroup(label, type, value, onChange, optional = false, placeholder = '') {
         const group = document.createElement('div');
         group.className = 'form-group';
         const labelEl = document.createElement('label');
@@ -455,9 +692,81 @@
         const input = document.createElement(type === 'textarea' ? 'textarea' : 'input');
         input.className = type === 'textarea' ? 'form-textarea' : 'form-input';
         if (type !== 'textarea') input.type = type;
+        if (placeholder) input.placeholder = placeholder;
         input.value = value;
         input.addEventListener('input', (e) => onChange(e.target.value));
         group.appendChild(input);
+        return group;
+      },
+
+      normalizeIndentValue(value) {
+        if (typeof value === 'number' && Number.isFinite(value)) {
+          return Math.min(50, Math.max(0, value));
+        }
+        if (typeof value === 'string') {
+          const trimmed = value.trim();
+          if (!trimmed) return 0;
+          if (/^\d+(\.\d+)?%$/.test(trimmed) || /^\d+(\.\d+)?$/.test(trimmed)) {
+            const parsed = Number.parseFloat(trimmed);
+            if (Number.isFinite(parsed)) {
+              return Math.min(50, Math.max(0, parsed));
+            }
+          }
+        }
+        return 0;
+      },
+
+      createIndentControl(value, onChange) {
+        const control = document.createElement('label');
+        control.className = 'indent-control';
+
+        const label = document.createElement('span');
+        label.className = 'indent-label';
+        label.textContent = 'Sangría';
+
+        const input = document.createElement('input');
+        input.type = 'range';
+        input.className = 'indent-range';
+        input.min = '0';
+        input.max = '50';
+        input.step = '1';
+        const initial = this.normalizeIndentValue(value);
+        input.value = String(initial);
+
+        const valueEl = document.createElement('span');
+        valueEl.className = 'indent-value';
+        valueEl.textContent = `${initial}%`;
+
+        input.addEventListener('input', (event) => {
+          const nextValue = Number(event.target.value);
+          valueEl.textContent = `${nextValue}%`;
+          onChange(nextValue);
+        });
+
+        control.appendChild(label);
+        control.appendChild(input);
+        control.appendChild(valueEl);
+        return control;
+      },
+
+      createToggleGroup(label, checked, onChange) {
+        const group = document.createElement('div');
+        group.className = 'form-group';
+
+        const toggle = document.createElement('label');
+        toggle.className = 'toggle-row';
+
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.checked = !!checked;
+        input.addEventListener('change', (e) => onChange(e.target.checked));
+
+        const text = document.createElement('span');
+        text.textContent = label;
+
+        toggle.appendChild(input);
+        toggle.appendChild(text);
+        group.appendChild(toggle);
         return group;
       },
 
@@ -465,10 +774,6 @@
         const blocks = this.normalizeBlocks(section);
         const group = document.createElement('div');
         group.className = 'form-group';
-        const label = document.createElement('label');
-        label.className = 'form-label optional';
-        label.textContent = 'Bloques (H3 + párrafos)';
-        group.appendChild(label);
 
         const list = document.createElement('div');
         list.className = 'block-list';
@@ -486,27 +791,50 @@
 
         const header = document.createElement('div');
         header.className = 'block-header';
-        header.innerHTML = `
-          <span class="block-label">Bloque ${blockIndex + 1}</span>
-          <button class="btn btn-icon btn-small" onclick="Editor.deleteBlock(${sectionIndex}, ${blockIndex})" title="Eliminar bloque">🗑️</button>
-        `;
+        const label = document.createElement('span');
+        label.className = 'block-label';
+        label.textContent = `Bloque +${blockIndex + 1}`;
+        header.appendChild(label);
+
+        header.appendChild(
+          this.createIndentControl(
+            block.sangria || 0,
+            (value) => this.updateBlockIndent(sectionIndex, blockIndex, value)
+          )
+        );
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-icon btn-small';
+        deleteBtn.title = 'Eliminar bloque';
+        deleteBtn.textContent = '🗑️';
+        deleteBtn.addEventListener('click', () => this.deleteBlock(sectionIndex, blockIndex));
+        header.appendChild(deleteBtn);
         card.appendChild(header);
 
         card.appendChild(
           this.createFormGroup(
-            'Subtítulo (H3)',
+            '',
             'text',
             block.subtitulo || '',
             (value) => this.updateSubtitle(sectionIndex, blockIndex, value),
-            true
+            true,
+            'Subtítulo'
+          )
+        );
+
+        card.appendChild(
+          this.createToggleGroup(
+            'Párrafos desplegables',
+            !!block.desplegable,
+            (value) => this.updateBlockToggle(sectionIndex, blockIndex, value)
           )
         );
 
         card.appendChild(this.createParagraphsGroup(block.texto || [], sectionIndex, blockIndex));
 
         const addBlockBtn = document.createElement('button');
-        addBlockBtn.className = 'btn btn-add';
-        addBlockBtn.textContent = '+ Añadir subtítulo';
+        addBlockBtn.className = 'btn btn-add btn-add-block';
+        addBlockBtn.textContent = '+ Añadir bloque';
         addBlockBtn.onclick = () => this.addBlock(sectionIndex, blockIndex);
         card.appendChild(addBlockBtn);
 
@@ -516,15 +844,11 @@
       createParagraphsGroup(paragraphs, sectionIndex, blockIndex) {
         const group = document.createElement('div');
         group.className = 'form-group';
-        const label = document.createElement('label');
-        label.className = 'form-label';
-        label.textContent = 'Texto (Párrafos)';
-        group.appendChild(label);
 
         const list = document.createElement('div');
         list.className = 'paragraph-list';
         paragraphs.forEach((paragraph, pIndex) => {
-          const item = this.createParagraphItem(paragraph, sectionIndex, blockIndex, pIndex);
+          const item = this.createParagraphItem(paragraph, sectionIndex, blockIndex, pIndex, paragraphs.length);
           list.appendChild(item);
         });
         group.appendChild(list);
@@ -537,15 +861,43 @@
         return group;
       },
 
-      createParagraphItem(paragraph, sectionIndex, blockIndex, pIndex) {
+      createParagraphItem(paragraph, sectionIndex, blockIndex, pIndex, totalParagraphs) {
         const item = document.createElement('div');
         item.className = 'paragraph-item';
         const header = document.createElement('div');
         header.className = 'paragraph-header';
-        header.innerHTML = `
-          <span class="paragraph-label">Párrafo ${pIndex + 1}</span>
-          <button class="btn btn-icon btn-small" onclick="Editor.deleteParagraph(${sectionIndex}, ${blockIndex}, ${pIndex})" title="Eliminar párrafo">🗑️</button>
-        `;
+        const label = document.createElement('span');
+        label.className = 'paragraph-label';
+        label.textContent = `Párrafo ${pIndex + 1}`;
+        header.appendChild(label);
+
+        const actions = document.createElement('div');
+        actions.className = 'paragraph-actions';
+
+        const moveUpBtn = document.createElement('button');
+        moveUpBtn.className = 'btn btn-icon btn-small';
+        moveUpBtn.title = 'Mover párrafo arriba';
+        moveUpBtn.textContent = '↑';
+        moveUpBtn.disabled = pIndex === 0;
+        moveUpBtn.addEventListener('click', () => this.moveParagraph(sectionIndex, blockIndex, pIndex, -1));
+        actions.appendChild(moveUpBtn);
+
+        const moveDownBtn = document.createElement('button');
+        moveDownBtn.className = 'btn btn-icon btn-small';
+        moveDownBtn.title = 'Mover párrafo abajo';
+        moveDownBtn.textContent = '↓';
+        moveDownBtn.disabled = pIndex === totalParagraphs - 1;
+        moveDownBtn.addEventListener('click', () => this.moveParagraph(sectionIndex, blockIndex, pIndex, 1));
+        actions.appendChild(moveDownBtn);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-icon btn-small';
+        deleteBtn.title = 'Eliminar párrafo';
+        deleteBtn.textContent = '🗑️';
+        deleteBtn.addEventListener('click', () => this.deleteParagraph(sectionIndex, blockIndex, pIndex));
+        actions.appendChild(deleteBtn);
+
+        header.appendChild(actions);
         item.appendChild(header);
 
         const textarea = document.createElement('textarea');
@@ -556,13 +908,63 @@
         return item;
       },
 
+      createImagesGroup(images, sectionIndex) {
+        const group = document.createElement('div');
+        group.className = 'form-group';
+
+        const list = document.createElement('div');
+        list.className = 'image-list';
+        images.forEach((image, iIndex) => {
+          const item = this.createImageItem(image, sectionIndex, iIndex);
+          list.appendChild(item);
+        });
+        group.appendChild(list);
+
+        const addBtn = document.createElement('button');
+        addBtn.className = 'btn btn-add';
+        addBtn.textContent = '+ Añadir imagen';
+        addBtn.onclick = () => this.addImage(sectionIndex);
+        group.appendChild(addBtn);
+        return group;
+      },
+
+      createImageItem(image, sectionIndex, iIndex) {
+        const item = document.createElement('div');
+        item.className = 'image-item';
+        const header = document.createElement('div');
+        header.className = 'image-header';
+        header.innerHTML = `
+          <span class="image-label">Imagen ${iIndex + 1}</span>
+          <button class="btn btn-icon btn-small" onclick="Editor.deleteImage(${sectionIndex}, ${iIndex})" title="Eliminar imagen">🗑️</button>
+        `;
+        item.appendChild(header);
+
+        const fields = document.createElement('div');
+        fields.className = 'image-fields';
+
+        const srcInput = document.createElement('input');
+        srcInput.className = 'form-input';
+        srcInput.type = 'text';
+        srcInput.placeholder = 'URL de la imagen (src)';
+        srcInput.value = image.src || '';
+        srcInput.addEventListener('input', (e) => this.updateImage(sectionIndex, iIndex, 'src', e.target.value));
+        fields.appendChild(srcInput);
+
+        const altInput = document.createElement('input');
+        altInput.className = 'form-input';
+        altInput.type = 'text';
+        altInput.placeholder = 'Texto alternativo (alt)';
+        altInput.value = image.alt || '';
+        altInput.addEventListener('input', (e) => this.updateImage(sectionIndex, iIndex, 'alt', e.target.value));
+        fields.appendChild(altInput);
+
+        item.appendChild(fields);
+        return item;
+      },
+
       createLogosGroup(logos, sectionIndex) {
         const group = document.createElement('div');
         group.className = 'form-group';
-        const label = document.createElement('label');
-        label.className = 'form-label optional';
-        label.textContent = 'Logos';
-        group.appendChild(label);
 
         const list = document.createElement('div');
         list.className = 'logo-list';
@@ -635,22 +1037,35 @@
         this.triggerUpdate();
       },
 
+      updateImage(sectionIndex, iIndex, field, value) {
+        if (!this.data[this.currentCategory][sectionIndex].imagenes) {
+          this.data[this.currentCategory][sectionIndex].imagenes = [];
+        }
+        this.data[this.currentCategory][sectionIndex].imagenes[iIndex][field] = value;
+        this.triggerUpdate();
+      },
+
       normalizeBlocks(section) {
+        const fallbackIndent = this.normalizeIndentValue(section.sangria);
         if (!Array.isArray(section.bloques) || section.bloques.length === 0) {
           const subtitulo = typeof section.subtitulo === 'string' ? section.subtitulo : '';
           const texto = Array.isArray(section.texto) ? section.texto : [];
-          section.bloques = [{ subtitulo, texto }];
+          section.bloques = [{ subtitulo, texto, desplegable: false, sangria: fallbackIndent }];
           delete section.subtitulo;
           delete section.texto;
         }
 
         section.bloques = section.bloques.map(block => ({
           subtitulo: typeof block.subtitulo === 'string' ? block.subtitulo : '',
-          texto: Array.isArray(block.texto) ? block.texto : []
+          texto: Array.isArray(block.texto) ? block.texto : [],
+          desplegable: typeof block.desplegable === 'boolean' ? block.desplegable : false,
+          sangria: this.normalizeIndentValue(
+            (typeof block.sangria === 'number' || typeof block.sangria === 'string') ? block.sangria : fallbackIndent
+          )
         }));
 
         if (section.bloques.length === 0) {
-          section.bloques.push({ subtitulo: '', texto: [] });
+          section.bloques.push({ subtitulo: '', texto: [], desplegable: false, sangria: fallbackIndent });
         }
 
         return section.bloques;
@@ -663,6 +1078,20 @@
         this.triggerUpdate();
       },
 
+      updateBlockToggle(sectionIndex, blockIndex, value) {
+        const section = this.data[this.currentCategory][sectionIndex];
+        const blocks = this.normalizeBlocks(section);
+        blocks[blockIndex].desplegable = value;
+        this.triggerUpdate();
+      },
+
+      updateBlockIndent(sectionIndex, blockIndex, value) {
+        const section = this.data[this.currentCategory][sectionIndex];
+        const blocks = this.normalizeBlocks(section);
+        blocks[blockIndex].sangria = this.normalizeIndentValue(value);
+        this.triggerUpdate();
+      },
+
       updateParagraph(sectionIndex, blockIndex, pIndex, value) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -671,7 +1100,7 @@
       },
 
       addSection() {
-        const newSection = { titulo: '', bloques: [{ subtitulo: '', texto: [] }] };
+        const newSection = { titulo: '', bloques: [{ subtitulo: '', texto: [], desplegable: false, sangria: 0 }], imagenes: [], logos: [] };
         this.data[this.currentCategory].push(newSection);
         this.renderCategory(this.currentCategory);
         this.triggerUpdate();
@@ -698,7 +1127,7 @@
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
         const insertAt = Math.min(afterBlockIndex + 1, blocks.length);
-        blocks.splice(insertAt, 0, { subtitulo: '', texto: [] });
+        blocks.splice(insertAt, 0, { subtitulo: '', texto: [], desplegable: false, sangria: 0 });
         this.renderCategory(this.currentCategory);
         this.triggerUpdate();
       },
@@ -727,6 +1156,17 @@
         this.triggerUpdate();
       },
 
+      moveParagraph(sectionIndex, blockIndex, pIndex, direction) {
+        const section = this.data[this.currentCategory][sectionIndex];
+        const blocks = this.normalizeBlocks(section);
+        const paragraphs = blocks[blockIndex].texto;
+        const newIndex = pIndex + direction;
+        if (newIndex < 0 || newIndex >= paragraphs.length) return;
+        [paragraphs[pIndex], paragraphs[newIndex]] = [paragraphs[newIndex], paragraphs[pIndex]];
+        this.renderCategory(this.currentCategory);
+        this.triggerUpdate();
+      },
+
       addLogo(sectionIndex) {
         if (!this.data[this.currentCategory][sectionIndex].logos) {
           this.data[this.currentCategory][sectionIndex].logos = [];
@@ -736,8 +1176,23 @@
         this.triggerUpdate();
       },
 
+      addImage(sectionIndex) {
+        if (!this.data[this.currentCategory][sectionIndex].imagenes) {
+          this.data[this.currentCategory][sectionIndex].imagenes = [];
+        }
+        this.data[this.currentCategory][sectionIndex].imagenes.push({ src: '', alt: '' });
+        this.renderCategory(this.currentCategory);
+        this.triggerUpdate();
+      },
+
       deleteLogo(sectionIndex, lIndex) {
         this.data[this.currentCategory][sectionIndex].logos.splice(lIndex, 1);
+        this.renderCategory(this.currentCategory);
+        this.triggerUpdate();
+      },
+
+      deleteImage(sectionIndex, iIndex) {
+        this.data[this.currentCategory][sectionIndex].imagenes.splice(iIndex, 1);
         this.renderCategory(this.currentCategory);
         this.triggerUpdate();
       },

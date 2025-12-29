@@ -25,6 +25,10 @@ body {
     z-index: 0;
 }
 
+body.lightbox-open {
+    overflow: hidden;
+}
+
 /* fondo fijo siempre en la capa inferior */
 body::before {
     content: '';
@@ -408,6 +412,111 @@ body.home-page {
     margin-top: var(--spacing-paragraph-break);
 }
 
+.content-block-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.content-block-header h3 {
+    margin-bottom: 0;
+}
+
+.block-toggle {
+    border: 1px solid var(--map-line-color);
+    background: transparent;
+    color: var(--map-text-color);
+    font-family: var(--font-paragraphs);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.block-toggle:hover {
+    transform: translateY(-1px);
+}
+
+.block-toggle:focus-visible {
+    outline: 2px solid var(--map-text-color);
+    outline-offset: 2px;
+}
+
+.content-block.is-collapsed .content-paragraphs {
+    display: none;
+}
+
+.content-block {
+    --block-paragraph-indent: 0;
+}
+
+.content-paragraphs p {
+    margin-left: var(--block-paragraph-indent);
+}
+
+.content-block + .content-block {
+    margin-top: var(--spacing-paragraph-break);
+}
+
+.images-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+}
+
+.image-item {
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: zoom-in;
+}
+
+.image-item:focus-visible {
+    outline: 2px solid var(--map-text-color);
+    outline-offset: 4px;
+}
+
+.image-thumb {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 4vw, 3rem);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.lightbox.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-image {
+    max-width: min(92vw, 1200px);
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
 .logos-container {
     display: flex;
     flex-wrap: wrap;
@@ -447,6 +556,10 @@ body.home-page {
         margin-bottom: 0.9rem;
     }
 
+    .content-block-header {
+        margin-bottom: 0.9rem;
+    }
+
     .logos-container {
         gap: 1rem;
         margin-top: 1.5rem;
@@ -455,6 +568,12 @@ body.home-page {
     .logo-item {
         max-width: 120px;
         max-height: 70px;
+    }
+
+    .images-container {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.9rem;
+        margin-top: 1.5rem;
     }
 }
 

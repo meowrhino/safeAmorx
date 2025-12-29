@@ -460,12 +460,15 @@
     }
 
     function normalizeBlocks(section) {
+        const fallbackIndent = section && section.sangria !== undefined ? section.sangria : 0;
         if (Array.isArray(section.bloques)) {
             return section.bloques.map(block => ({
                 subtitulo: typeof block.subtitulo === 'string' ? block.subtitulo : '',
                 texto: Array.isArray(block.texto)
                     ? block.texto
-                    : (typeof block.texto === 'string' ? [block.texto] : [])
+                    : (typeof block.texto === 'string' ? [block.texto] : []),
+                desplegable: typeof block.desplegable === 'boolean' ? block.desplegable : false,
+                sangria: (typeof block.sangria === 'number' || typeof block.sangria === 'string') ? block.sangria : fallbackIndent
             }));
         }
 
@@ -476,7 +479,76 @@
             ? section.texto
             : (typeof section.texto === 'string' ? [section.texto] : []);
 
-        return [{ subtitulo, texto }];
+        return [{ subtitulo, texto, desplegable: false, sangria: fallbackIndent }];
+    }
+
+    function normalizeIndent(value) {
+        if (value === null || value === undefined) return '';
+        if (typeof value === 'number' && Number.isFinite(value)) {
+            const clamped = Math.min(50, Math.max(0, value));
+            return `${clamped}%`;
+        }
+        if (typeof value === 'string' && value.trim()) {
+            const trimmed = value.trim();
+            if (/^\d+(\.\d+)?%$/.test(trimmed) || /^\d+(\.\d+)?$/.test(trimmed)) {
+                const parsed = Number.parseFloat(trimmed);
+                if (Number.isFinite(parsed)) {
+                    const clamped = Math.min(50, Math.max(0, parsed));
+                    return `${clamped}%`;
+                }
+            }
+        }
+        return '';
+    }
+
+    let lightbox;
+    let lightboxKeyHandlerAttached = false;
+
+    function ensureLightbox() {
+        if (lightbox) return lightbox;
+        lightbox = document.createElement('div');
+        lightbox.className = 'lightbox';
+        lightbox.setAttribute('aria-hidden', 'true');
+
+        const img = document.createElement('img');
+        img.className = 'lightbox-image';
+        img.alt = '';
+        lightbox.appendChild(img);
+
+        lightbox.addEventListener('click', (event) => {
+            if (event.target === lightbox) closeLightbox();
+        });
+
+        if (!lightboxKeyHandlerAttached) {
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') closeLightbox();
+            });
+            lightboxKeyHandlerAttached = true;
+        }
+
+        document.body.appendChild(lightbox);
+        return lightbox;
+    }
+
+    function openLightbox(src, altText) {
+        if (!src) return;
+        const overlay = ensureLightbox();
+        const img = overlay.querySelector('img');
+        img.src = src;
+        img.alt = altText || '';
+        overlay.classList.add('is-visible');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('lightbox-open');
+    }
+
+    function closeLightbox() {
+        if (!lightbox) return;
+        const img = lightbox.querySelector('img');
+        img.src = '';
+        img.alt = '';
+        lightbox.classList.remove('is-visible');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('lightbox-open');
     }
 
     function createSection(section, index) {
@@ -491,21 +563,92 @@
         }
 
         const blocks = normalizeBlocks(section);
-        blocks.forEach(block => {
-            if (block.subtitulo && block.subtitulo.trim()) {
-                const h3 = document.createElement('h3');
-                h3.textContent = block.subtitulo;
-                sectionDiv.appendChild(h3);
+        blocks.forEach((block, blockIndex) => {
+            const blockWrapper = document.createElement('div');
+            blockWrapper.className = 'content-block';
+            const blockIndent = normalizeIndent(block.sangria);
+            if (blockIndent) {
+                blockWrapper.style.setProperty('--block-paragraph-indent', blockIndent);
             }
 
+            const paragraphsWrapper = document.createElement('div');
+            paragraphsWrapper.className = 'content-paragraphs';
+            paragraphsWrapper.id = `block-${index}-${blockIndex}-content`;
+
+            let hasParagraphs = false;
+            let hasHeader = false;
             block.texto.forEach(parrafo => {
                 const trimmed = typeof parrafo === 'string' ? parrafo.trim() : '';
                 if (!trimmed) return;
                 const p = document.createElement('p');
                 p.textContent = parrafo;
-                sectionDiv.appendChild(p);
+                paragraphsWrapper.appendChild(p);
+                hasParagraphs = true;
             });
+
+            if (block.subtitulo && block.subtitulo.trim()) {
+                const header = document.createElement('div');
+                header.className = 'content-block-header';
+                const h3 = document.createElement('h3');
+                h3.textContent = block.subtitulo;
+                header.appendChild(h3);
+                hasHeader = true;
+
+                if (block.desplegable && hasParagraphs) {
+                    const toggle = document.createElement('button');
+                    toggle.type = 'button';
+                    toggle.className = 'block-toggle';
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.setAttribute('aria-controls', paragraphsWrapper.id);
+                    toggle.textContent = 'ver más';
+
+                    toggle.addEventListener('click', () => {
+                        const isCollapsed = blockWrapper.classList.toggle('is-collapsed');
+                        toggle.setAttribute('aria-expanded', String(!isCollapsed));
+                        toggle.textContent = isCollapsed ? 'ver más' : 'ver menos';
+                    });
+
+                    blockWrapper.classList.add('is-collapsed');
+                    header.appendChild(toggle);
+                }
+
+                blockWrapper.appendChild(header);
+            }
+
+            if (hasHeader || hasParagraphs) {
+                if (hasParagraphs) {
+                    blockWrapper.appendChild(paragraphsWrapper);
+                }
+                sectionDiv.appendChild(blockWrapper);
+            }
         });
+
+        if (section.imagenes && Array.isArray(section.imagenes) && section.imagenes.length > 0) {
+            const imagesContainer = document.createElement('div');
+            imagesContainer.className = 'images-container';
+
+            section.imagenes.forEach(image => {
+                if (!image || !image.src) return;
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'image-item';
+
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.alt = image.alt || '';
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                img.className = 'image-thumb';
+
+                item.appendChild(img);
+                item.addEventListener('click', () => openLightbox(image.src, image.alt || ''));
+                imagesContainer.appendChild(item);
+            });
+
+            if (imagesContainer.children.length > 0) {
+                sectionDiv.appendChild(imagesContainer);
+            }
+        }
 
         if (section.logos && Array.isArray(section.logos) && section.logos.length > 0) {
             const logosContainer = document.createElement('div');
