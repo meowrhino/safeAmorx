@@ -425,21 +425,24 @@ body.home-page {
 }
 
 .block-toggle {
-    border: 1px solid var(--map-line-color);
+    border: none;
     background: transparent;
-    color: var(--map-text-color);
+    color: #ffffff;
     font-family: var(--font-paragraphs);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 0.25rem 0.6rem;
-    border-radius: 999px;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
     cursor: pointer;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    transform: rotate(-90deg);
+}
+
+.content-block:not(.is-collapsed) .block-toggle {
+    transform: rotate(90deg);
 }
 
 .block-toggle:hover {
-    transform: translateY(-1px);
+    opacity: 0.85;
 }
 
 .block-toggle:focus-visible {

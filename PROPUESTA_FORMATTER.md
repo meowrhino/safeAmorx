@@ -157,7 +157,7 @@ formatter.html          # Página única con HTML + CSS + JS embebidos
 
 1. **Abrir el formatter** (`formatter.html`)
 2. **Importar** el `data.json` actual (o empezar desde cero) – ahora se carga automáticamente si existe
-3. **Seleccionar categoría** (About, Booking, CV)
+3. **Seleccionar categoría** (About, Booking, Collabs, Training)
 4. **Editar secciones**:
    - Modificar títulos, subtítulos
    - Añadir/editar/eliminar párrafos

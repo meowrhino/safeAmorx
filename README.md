@@ -4,22 +4,22 @@ Sitio web de Safe Amorx con navegación en grid, contenido dinámico desde `data
 
 ## Estructura
 - `index.html` (home con grid aleatoria)
-- `about.html`, `booking.html`, `cv.html`, `blog.html` (páginas de contenido)
-- `data.json` (fuente única de contenido para about/booking/cv)
+- `about.html`, `booking.html`, `collabs.html`, `training.html`, `blog.html` (páginas de contenido)
+- `data.json` (fuente única de contenido para about/booking/collabs/training)
 - `formatter.html` (editor visual inline para `data.json`)
 - `css/styles.css` (estilos únicos de todo el sitio)
 - `js/main.js` (lógica única: grid + loader)
 - `assets/` (imágenes, fondos)
 
 ## Contenido dinámico (`data.json`)
-- Claves: `about`, `booking`, `cv`, cada una es un array de secciones.
+- Claves: `about`, `booking`, `collabs`, `training`, cada una es un array de secciones.
 - Estructura de sección:
   - `titulo` (h2)
   - `bloques` (array de bloques con `subtitulo` + `texto`)
     - `subtitulo` (h3, opcional)
     - `texto` (array de párrafos)
   - `logos` (array opcional con `src`, `link`, `alt`)
-- `js/main.js` detecta la página (about/booking/cv), carga `data.json` y pinta h2/h3/p/logos dentro de `.page-content`.
+- `js/main.js` detecta la página (about/booking/collabs/training), carga `data.json` y pinta h2/h3/p/logos dentro de `.page-content`.
 
 ### Editar contenido
 - Manual: abre `data.json`, modifica los bloques de cada categoría y guarda.
@@ -39,7 +39,7 @@ Sitio web de Safe Amorx con navegación en grid, contenido dinámico desde `data
 - Añadir nuevas secciones: vía editor o añadiendo objetos en el array correspondiente en `data.json`.
 
 ## Notas de desarrollo
-- El loader tolera JSONs con `curriculum` y los migra a `cv` automáticamente.
+- El loader tolera JSONs con `curriculum` y los migra a `collabs` automáticamente.
 - Si una sección no tiene `bloques`, el loader la trata como un único bloque con `subtitulo` + `texto`.
 - El home link en páginas internas está en el flujo del contenido, debajo del texto.
 - Evita modificar rutas/archivos sin actualizar los enlaces en `js/main.js`.

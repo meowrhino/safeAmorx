@@ -16,9 +16,10 @@
     const sections = [
         { name: 'home', url: 'index.html', isHome: true },
         { name: 'about', url: 'about.html', isHome: false },
-        { name: 'cv', url: 'cv.html', isHome: false },
+        { name: 'collabs', url: 'collabs.html', isHome: false },
         { name: 'blog', url: 'blog.html', isHome: false },
-        { name: 'booking', url: 'booking.html', isHome: false }
+        { name: 'booking', url: 'booking.html', isHome: false },
+        { name: 'training', url: 'training.html', isHome: false }
     ];
 
     function getCellsPerAxis() {
@@ -431,7 +432,8 @@
 
         if (title.includes('about')) return 'about';
         if (title.includes('booking')) return 'booking';
-        if (title.includes('curriculum') || title.includes('cv')) return 'cv';
+        if (title.includes('collabs') || title.includes('curriculum') || title.includes('cv')) return 'collabs';
+        if (title.includes('training')) return 'training';
 
         return null;
     }
@@ -600,12 +602,13 @@
                     toggle.className = 'block-toggle';
                     toggle.setAttribute('aria-expanded', 'false');
                     toggle.setAttribute('aria-controls', paragraphsWrapper.id);
-                    toggle.textContent = 'ver más';
+                    toggle.setAttribute('aria-label', 'Expandir bloque');
+                    toggle.textContent = '>';
 
                     toggle.addEventListener('click', () => {
                         const isCollapsed = blockWrapper.classList.toggle('is-collapsed');
                         toggle.setAttribute('aria-expanded', String(!isCollapsed));
-                        toggle.textContent = isCollapsed ? 'ver más' : 'ver menos';
+                        toggle.setAttribute('aria-label', isCollapsed ? 'Expandir bloque' : 'Contraer bloque');
                     });
 
                     blockWrapper.classList.add('is-collapsed');

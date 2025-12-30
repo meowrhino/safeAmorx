@@ -28,18 +28,18 @@
     .formatter-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 28px 32px 18px; border-bottom: 1px solid var(--color-border); background: var(--color-bg); }
     .title-block h1 { font-size: 1.8rem; letter-spacing: -0.02em; font-weight: 600; color: var(--color-strong); }
     .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; color: var(--color-muted); margin-bottom: 4px; }
-    .tabs { display: flex; gap: 8px; padding: 0 32px 16px; border-bottom: 1px solid var(--color-border); background: var(--color-bg); }
+    .tabs { display: flex; gap: 8px; padding: 0 32px 16px; border-bottom: 1px solid var(--color-border); background: var(--color-bg); flex-wrap: wrap; }
     .tab { background: transparent; border: none; padding: 10px 14px; cursor: pointer; color: var(--color-muted); border-bottom: 2px solid transparent; font-size: 1rem; text-transform: lowercase; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s ease, border-color 0.2s ease; }
     .tab:hover { color: var(--color-text); }
     .tab.active { color: var(--color-text); border-bottom-color: var(--color-strong); }
     .tab-count { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 999px; padding: 2px 8px; font-size: 0.85rem; color: var(--color-muted); }
-    .formatter-main { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; padding: 24px 32px 32px; }
+    .formatter-main { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 24px; padding: 24px 32px 32px; }
     .editor-panel, .preview-panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); display: flex; flex-direction: column; box-shadow: var(--shadow); }
     .panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 20px 12px; border-bottom: 1px solid var(--color-border); }
     .panel-header h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px; }
     .panel-actions { display: flex; gap: 10px; align-items: center; }
     .sections-container, .preview-container { padding: 18px 20px 24px; overflow-y: auto; }
-    .section-card { background: transparent; border: none; border-radius: 0; padding: 0; margin-bottom: 14px; }
+    .section-card { background: transparent; border: none; border-radius: 0; padding: 0; margin-bottom: 28px; }
     .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
     .section-number { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); }
     .section-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
@@ -85,6 +85,8 @@
     .btn-add { width: 100%; border: none; color: var(--color-muted); background: transparent; }
     .btn-add:hover { background: #f0ebe4; color: var(--color-text); }
     .btn-add-block { font-weight: 700; }
+    .btn-add-inline { width: auto; padding: 8px 10px; }
+    .block-actions-row { display: flex; gap: 10px; margin-top: 10px; }
     .btn-danger { border-color: #d33643; color: #d33643; }
     .btn-danger:hover { background: rgba(211, 54, 67, 0.08); }
     .preview-container { background: var(--color-surface); }
@@ -95,7 +97,9 @@
     .preview-section p { color: var(--color-text); margin-bottom: 10px; }
     .preview-block-header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
     .preview-block-header h3 { margin-bottom: 0; }
-    .preview-toggle { border: 1px solid var(--color-border); background: transparent; color: var(--color-muted); border-radius: 999px; padding: 2px 8px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; }
+    .preview-toggle { border: none; background: transparent; color: var(--color-muted); padding: 0; font-size: 0.9rem; line-height: 1; cursor: pointer; transition: transform 0.2s ease, opacity 0.2s ease; transform: rotate(-90deg); }
+    .preview-block:not(.is-collapsed) .preview-toggle { transform: rotate(90deg); }
+    .preview-toggle:hover { opacity: 0.8; }
     .preview-block.is-collapsed .preview-paragraphs { display: none; }
     .preview-block + .preview-block { margin-top: 12px; }
     .preview-block { --preview-paragraph-indent: 0; }
@@ -144,7 +148,8 @@
   <nav class="tabs">
     <button class="tab active" data-category="about">about <span class="tab-count" id="count-about">0</span></button>
     <button class="tab" data-category="booking">booking <span class="tab-count" id="count-booking">0</span></button>
-    <button class="tab" data-category="cv">cv <span class="tab-count" id="count-cv">0</span></button>
+    <button class="tab" data-category="collabs">collabs <span class="tab-count" id="count-collabs">0</span></button>
+    <button class="tab" data-category="training">training <span class="tab-count" id="count-training">0</span></button>
   </nav>
 
   <main class="formatter-main">
@@ -263,11 +268,11 @@
       validate(data) {
         const normalized = this.normalize(data);
         if (!normalized) return false;
-        return ['about', 'booking', 'cv'].every((category) => Array.isArray(normalized[category]));
+        return ['about', 'booking', 'collabs', 'training'].every((category) => Array.isArray(normalized[category]));
       },
 
       getEmptyStructure() {
-        return { about: [], booking: [], cv: [] };
+        return { about: [], booking: [], collabs: [], training: [] };
       },
 
       async copyToClipboard(data) {
@@ -284,10 +289,14 @@
       normalize(raw) {
         if (!raw || typeof raw !== 'object') return null;
         const data = JSON.parse(JSON.stringify(raw));
-        if (!data.cv && Array.isArray(data.curriculum)) {
-          data.cv = data.curriculum;
-          delete data.curriculum;
+        if (!data.collabs && Array.isArray(data.cv)) {
+          data.collabs = data.cv;
         }
+        if (!data.collabs && Array.isArray(data.curriculum)) {
+          data.collabs = data.curriculum;
+        }
+        if (data.cv) delete data.cv;
+        if (data.curriculum) delete data.curriculum;
         const normalizeIndentValue = (value) => {
           if (typeof value === 'number' && Number.isFinite(value)) {
             return Math.min(50, Math.max(0, value));
@@ -342,7 +351,7 @@
           }
           return normalized;
         };
-        ['about', 'booking', 'cv'].forEach((category) => {
+        ['about', 'booking', 'collabs', 'training'].forEach((category) => {
           if (!Array.isArray(data[category])) data[category] = [];
           data[category] = data[category].map(normalizeSection);
         });
@@ -502,12 +511,13 @@
               toggle.className = 'preview-toggle';
               toggle.setAttribute('aria-expanded', 'false');
               toggle.setAttribute('aria-controls', paragraphsWrapper.id);
-              toggle.textContent = 'ver más';
+              toggle.setAttribute('aria-label', 'Expandir bloque');
+              toggle.textContent = '>';
 
               toggle.addEventListener('click', () => {
                 const isCollapsed = blockWrapper.classList.toggle('is-collapsed');
                 toggle.setAttribute('aria-expanded', String(!isCollapsed));
-                toggle.textContent = isCollapsed ? 'ver más' : 'ver menos';
+                toggle.setAttribute('aria-label', isCollapsed ? 'Expandir bloque' : 'Contraer bloque');
               });
 
               blockWrapper.classList.add('is-collapsed');
@@ -778,14 +788,20 @@
         const list = document.createElement('div');
         list.className = 'block-list';
         blocks.forEach((block, blockIndex) => {
-          const item = this.createBlockCard(block, sectionIndex, blockIndex);
+          const item = this.createBlockCard(block, sectionIndex, blockIndex, blocks.length);
           list.appendChild(item);
         });
         group.appendChild(list);
+
+        const addBlockBtn = document.createElement('button');
+        addBlockBtn.className = 'btn btn-add btn-add-block';
+        addBlockBtn.textContent = '+ Añadir bloque';
+        addBlockBtn.onclick = () => this.addBlock(sectionIndex, blocks.length - 1);
+        group.appendChild(addBlockBtn);
         return group;
       },
 
-      createBlockCard(block, sectionIndex, blockIndex) {
+      createBlockCard(block, sectionIndex, blockIndex, totalBlocks) {
         const card = document.createElement('div');
         card.className = 'block-card';
 
@@ -832,11 +848,30 @@
 
         card.appendChild(this.createParagraphsGroup(block.texto || [], sectionIndex, blockIndex));
 
-        const addBlockBtn = document.createElement('button');
-        addBlockBtn.className = 'btn btn-add btn-add-block';
-        addBlockBtn.textContent = '+ Añadir bloque';
-        addBlockBtn.onclick = () => this.addBlock(sectionIndex, blockIndex);
-        card.appendChild(addBlockBtn);
+        const actionsRow = document.createElement('div');
+        actionsRow.className = 'block-actions-row';
+
+        const addParagraphBtn = document.createElement('button');
+        addParagraphBtn.className = 'btn btn-add btn-add-inline';
+        addParagraphBtn.textContent = '+ Añadir párrafo';
+        addParagraphBtn.onclick = () => this.addParagraph(sectionIndex, blockIndex);
+        actionsRow.appendChild(addParagraphBtn);
+
+        if (blockIndex === totalBlocks - 1) {
+          const addImageBtn = document.createElement('button');
+          addImageBtn.className = 'btn btn-add btn-add-inline';
+          addImageBtn.textContent = '+ Añadir imagen';
+          addImageBtn.onclick = () => this.addImage(sectionIndex);
+          actionsRow.appendChild(addImageBtn);
+
+          const addLogoBtn = document.createElement('button');
+          addLogoBtn.className = 'btn btn-add btn-add-inline';
+          addLogoBtn.textContent = '+ Añadir logo';
+          addLogoBtn.onclick = () => this.addLogo(sectionIndex);
+          actionsRow.appendChild(addLogoBtn);
+        }
+
+        card.appendChild(actionsRow);
 
         return card;
       },
@@ -852,12 +887,6 @@
           list.appendChild(item);
         });
         group.appendChild(list);
-
-        const addBtn = document.createElement('button');
-        addBtn.className = 'btn btn-add';
-        addBtn.textContent = '+ Añadir párrafo';
-        addBtn.onclick = () => this.addParagraph(sectionIndex, blockIndex);
-        group.appendChild(addBtn);
         return group;
       },
 
@@ -919,12 +948,6 @@
           list.appendChild(item);
         });
         group.appendChild(list);
-
-        const addBtn = document.createElement('button');
-        addBtn.className = 'btn btn-add';
-        addBtn.textContent = '+ Añadir imagen';
-        addBtn.onclick = () => this.addImage(sectionIndex);
-        group.appendChild(addBtn);
         return group;
       },
 
@@ -973,12 +996,6 @@
           list.appendChild(item);
         });
         group.appendChild(list);
-
-        const addBtn = document.createElement('button');
-        addBtn.className = 'btn btn-add';
-        addBtn.textContent = '+ Añadir Logo';
-        addBtn.onclick = () => this.addLogo(sectionIndex);
-        group.appendChild(addBtn);
         return group;
       },
 
@@ -1272,7 +1289,7 @@
           tab.classList.toggle('active', tab.dataset.category === category);
         });
 
-        const categoryTitles = { about: 'About', booking: 'Booking', cv: 'CV' };
+        const categoryTitles = { about: 'About', booking: 'Booking', collabs: 'Collabs', training: 'Training' };
         document.getElementById('categoryTitle').textContent = categoryTitles[category] || category;
 
         if (!this.data[category]) this.data[category] = [];
@@ -1281,7 +1298,7 @@
       },
 
       updateCounts() {
-        ['about', 'booking', 'cv'].forEach(category => {
+        ['about', 'booking', 'collabs', 'training'].forEach(category => {
           const count = this.data[category] ? this.data[category].length : 0;
           const countEl = document.getElementById(`count-${category}`);
           if (countEl) countEl.textContent = count;
