@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ============================================================================
-       ESTILOS (versión compacta)
+       RESET Y VARIABLES
        ============================================================================ */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     :root {
+      /* Colores */
       --color-bg: #f7f3ec;
       --color-surface: #ffffff;
       --color-border: #e4dcd3;
@@ -20,124 +27,780 @@
       --color-muted: #6f6259;
       --color-strong: #0f0c0a;
       --color-soft: #fcfaf7;
+
+      /* Estilos visuales */
       --radius: 12px;
       --shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
+
+      /* Tipografía */
       --font-main: 'Archivo', sans-serif;
     }
-    body { font-family: var(--font-main); background: var(--color-bg); color: var(--color-text); min-height: 100vh; line-height: 1.5; }
-    .formatter-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 28px 32px 18px; border-bottom: 1px solid var(--color-border); background: var(--color-bg); }
-    .title-block h1 { font-size: 1.8rem; letter-spacing: -0.02em; font-weight: 600; color: var(--color-strong); }
-    .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; color: var(--color-muted); margin-bottom: 4px; }
-    .tabs { display: flex; gap: 8px; padding: 0 32px 16px; border-bottom: 1px solid var(--color-border); background: var(--color-bg); flex-wrap: wrap; }
-    .tab { background: transparent; border: none; padding: 10px 14px; cursor: pointer; color: var(--color-muted); border-bottom: 2px solid transparent; font-size: 1rem; text-transform: lowercase; display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s ease, border-color 0.2s ease; }
-    .tab:hover { color: var(--color-text); }
-    .tab.active { color: var(--color-text); border-bottom-color: var(--color-strong); }
-    .tab-count { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 999px; padding: 2px 8px; font-size: 0.85rem; color: var(--color-muted); }
-    .formatter-main { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 24px; padding: 24px 32px 32px; }
-    .editor-panel, .preview-panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); display: flex; flex-direction: column; box-shadow: var(--shadow); }
-    .panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 20px 12px; border-bottom: 1px solid var(--color-border); }
-    .panel-header h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px; }
-    .panel-actions { display: flex; gap: 10px; align-items: center; }
-    .sections-container, .preview-container { padding: 18px 20px 24px; overflow-y: auto; }
-    .section-card { background: transparent; border: none; border-radius: 0; padding: 0; margin-bottom: 28px; }
-    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
-    .section-number { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); }
-    .section-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .indent-control { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--color-muted); }
-    .indent-label { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.75rem; }
-    .indent-range { width: 120px; accent-color: var(--color-strong); }
-    .indent-value { font-variant-numeric: tabular-nums; color: var(--color-strong); min-width: 3ch; text-align: right; }
-    .form-group { margin-bottom: 14px; }
-    .form-label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.95rem; color: var(--color-muted); }
-    .form-label.optional::after { content: ""; }
-    .form-input, .form-textarea { width: 100%; border: 1px solid var(--color-border); border-radius: 10px; padding: 10px 12px; font-size: 1rem; font-family: var(--font-main); background: var(--color-surface); color: var(--color-text); transition: border-color 0.2s ease, box-shadow 0.2s ease; }
-    .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--color-strong); box-shadow: 0 0 0 2px rgba(15, 12, 10, 0.08); }
-    .form-textarea { min-height: 80px; resize: vertical; }
-    .paragraph-list, .logo-list { display: flex; flex-direction: column; gap: 10px; }
-    .block-list { display: flex; flex-direction: column; gap: 12px; }
-    .block-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 12px; }
-    .block-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 10px; flex-wrap: wrap; }
-    .block-label { font-size: 0.9rem; color: var(--color-muted); }
-    .paragraph-item { background: transparent; border: none; border-radius: 0; padding: 0; }
-    .logo-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 12px; }
-    .paragraph-item .form-textarea { border-radius: 0; border: 0; background: transparent; }
-    .paragraph-header, .logo-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
-    .paragraph-label, .logo-label { font-size: 0.9rem; color: var(--color-muted); }
-    .paragraph-actions { display: flex; gap: 6px; align-items: center; }
-    .logo-fields { display: flex; flex-direction: column; gap: 10px; }
-    .toggle-row { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; color: var(--color-muted); }
-    .toggle-row input { width: 18px; height: 18px; accent-color: var(--color-strong); }
-    .image-list { display: flex; flex-direction: column; gap: 10px; }
-    .image-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 12px; }
-    .image-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .image-label { font-size: 0.9rem; color: var(--color-muted); }
-    .image-fields { display: flex; flex-direction: column; gap: 10px; }
-    .btn { border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); border-radius: 10px; padding: 10px 14px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
-    .btn:hover { background: #f0ebe4; transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
-    .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-    .btn:disabled:hover { background: var(--color-surface); }
-    .btn.solid { background: transparent; color: var(--color-strong); border: none; }
-    .btn.solid:hover { background: #f0ebe4; }
-    .btn.ghost { background: transparent; }
-    .btn-small { padding: 8px 12px; font-size: 0.95rem; }
-    .btn-icon { padding: 6px 10px; }
-    .btn-add { width: 100%; border: none; color: var(--color-muted); background: transparent; }
-    .btn-add:hover { background: #f0ebe4; color: var(--color-text); }
-    .btn-add-block { font-weight: 700; }
-    .btn-add-inline { width: auto; padding: 8px 10px; }
-    .block-actions-row { display: flex; gap: 10px; margin-top: 10px; }
-    .btn-danger { border-color: #d33643; color: #d33643; }
-    .btn-danger:hover { background: rgba(211, 54, 67, 0.08); }
-    .preview-container { background: var(--color-surface); }
-    .preview-section { padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px solid var(--color-border); }
-    .preview-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .preview-section h2 { font-size: 1.4rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
-    .preview-section h3 { font-size: 1.05rem; font-weight: 600; color: var(--color-muted); margin-bottom: 8px; }
-    .preview-section p { color: var(--color-text); margin-bottom: 10px; }
-    .preview-block-header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-    .preview-block-header h3 { margin-bottom: 0; }
-    .preview-toggle { border: none; background: transparent; color: var(--color-muted); padding: 0; font-size: 0.9rem; line-height: 1; cursor: pointer; transition: transform 0.2s ease, opacity 0.2s ease; transform: rotate(-90deg); }
-    .preview-block:not(.is-collapsed) .preview-toggle { transform: rotate(90deg); }
-    .preview-toggle:hover { opacity: 0.8; }
-    .preview-paragraphs { max-height: var(--preview-max-height, 9999px); overflow: hidden; opacity: 1; transform: translateY(0); transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease; }
-    .preview-block.is-collapsed .preview-paragraphs { max-height: 0; opacity: 0; transform: translateY(-4px); pointer-events: none; }
-    .preview-block + .preview-block { margin-top: 12px; }
-    .preview-block { --preview-paragraph-indent: 0; }
-    .preview-paragraphs p { margin-left: var(--preview-paragraph-indent); }
-    .preview-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; }
-    .preview-image-item { border: none; background: transparent; padding: 0; cursor: zoom-in; }
-    .preview-image-thumb { width: 100%; display: block; border-radius: 8px; border: 1px solid var(--color-border); }
-    .preview-logos { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-    .preview-logo { border: 1px solid var(--color-border); border-radius: 8px; padding: 6px 10px; background: var(--color-soft); color: var(--color-muted); font-size: 0.95rem; }
-    .preview-lightbox { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 20; padding: 20px; }
-    .preview-lightbox.is-visible { opacity: 1; pointer-events: auto; }
-    .preview-lightbox-image { max-width: min(92vw, 900px); max-height: 90vh; object-fit: contain; border-radius: 10px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4); }
-    .formatter-footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 16px 32px 28px; border-top: 1px solid var(--color-border); background: var(--color-bg); }
-    .footer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .footer-actions.footer-left { justify-content: flex-start; }
-    .footer-actions.footer-center { justify-content: center; }
-    .status-message { min-height: 1.2em; color: var(--color-muted); justify-self: end; }
-    .status-message.success { color: #1f7a4c; }
-    .status-message.error { color: #c0392b; }
-    .status-message.warning { color: #c28418; }
-    .empty-state { text-align: center; color: var(--color-muted); padding: 18px; background: var(--color-soft); border: 1px dashed var(--color-border); border-radius: 10px; }
-    .sections-container::-webkit-scrollbar, .preview-container::-webkit-scrollbar { width: 8px; }
-    .sections-container::-webkit-scrollbar-thumb, .preview-container::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 10px; }
-    .sections-container::-webkit-scrollbar-track, .preview-container::-webkit-scrollbar-track { background: transparent; }
-    @media (max-width: 1024px) { .formatter-main { grid-template-columns: 1fr; } .preview-panel { order: 2; } }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* ============================================================================
+       HEADER
+       ============================================================================ */
+    .formatter-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 28px 32px 18px;
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-bg);
+    }
+
+    .title-block h1 {
+      font-size: 1.8rem;
+      letter-spacing: -0.02em;
+      font-weight: 600;
+      color: var(--color-strong);
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      margin-bottom: 4px;
+    }
+
+    /* ============================================================================
+       TABS (NAVEGACIÓN DE CATEGORÍAS)
+       ============================================================================ */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 0 32px 16px;
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-bg);
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      background: transparent;
+      border: none;
+      padding: 10px 14px;
+      cursor: pointer;
+      color: var(--color-muted);
+      border-bottom: 2px solid transparent;
+      font-size: 1rem;
+      text-transform: lowercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .tab:hover {
+      color: var(--color-text);
+    }
+
+    .tab.active {
+      color: var(--color-text);
+      border-bottom-color: var(--color-strong);
+    }
+
+    .tab-count {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.85rem;
+      color: var(--color-muted);
+    }
+
+    /* ============================================================================
+       LAYOUT PRINCIPAL (EDITOR + PREVIEW)
+       ============================================================================ */
+    .formatter-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 24px;
+      padding: 24px 32px 32px;
+    }
+
+    .editor-panel,
+    .preview-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 20px 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .panel-header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-top: 2px;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* ============================================================================
+       CONTENEDORES DE SECCIONES Y PREVIEW
+       ============================================================================ */
+    .sections-container,
+    .preview-container {
+      padding: 18px 20px 24px;
+      overflow-y: auto;
+    }
+
+    /* Scrollbar personalizado */
+    .sections-container::-webkit-scrollbar,
+    .preview-container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .sections-container::-webkit-scrollbar-thumb,
+    .preview-container::-webkit-scrollbar-thumb {
+      background: var(--color-border);
+      border-radius: 10px;
+    }
+
+    .sections-container::-webkit-scrollbar-track,
+    .preview-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* ============================================================================
+       TARJETAS DE SECCIÓN (EDITOR)
+       ============================================================================ */
+    .section-card {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      margin-bottom: 28px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    .section-number {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-muted);
+    }
+
+    .section-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================================================
+       CONTROL DE SANGRÍA
+       ============================================================================ */
+    .indent-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--color-muted);
+    }
+
+    .indent-label {
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.75rem;
+    }
+
+    .indent-range {
+      width: 120px;
+      accent-color: var(--color-strong);
+    }
+
+    .indent-value {
+      font-variant-numeric: tabular-nums;
+      color: var(--color-strong);
+      min-width: 3ch;
+      text-align: right;
+    }
+
+    /* ============================================================================
+       FORMULARIOS (INPUTS Y TEXTAREAS)
+       ============================================================================ */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--color-muted);
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 1rem;
+      font-family: var(--font-main);
+      background: var(--color-surface);
+      color: var(--color-text);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--color-strong);
+      box-shadow: 0 0 0 2px rgba(15, 12, 10, 0.08);
+    }
+
+    .form-textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    /* ============================================================================
+       LISTAS DE BLOQUES, PÁRRAFOS, IMÁGENES Y LOGOS
+       ============================================================================ */
+    .paragraph-list,
+    .logo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .block-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .block-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .block-label {
+      font-size: 0.9rem;
+      color: var(--color-muted);
+    }
+
+    .paragraph-item {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+    }
+
+    .logo-item {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .paragraph-item .form-textarea {
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .paragraph-header,
+    .logo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .paragraph-label,
+    .logo-label {
+      font-size: 0.9rem;
+      color: var(--color-muted);
+    }
+
+    .paragraph-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .logo-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ============================================================================
+       TOGGLE (CHECKBOX)
+       ============================================================================ */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--color-muted);
+    }
+
+    .toggle-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-strong);
+    }
+
+    /* ============================================================================
+       IMÁGENES
+       ============================================================================ */
+    .image-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .image-item {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .image-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .image-label {
+      font-size: 0.9rem;
+      color: var(--color-muted);
+    }
+
+    .image-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ============================================================================
+       BOTONES
+       ============================================================================ */
+    .btn {
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #f0ebe4;
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn:disabled:hover {
+      background: var(--color-surface);
+    }
+
+    .btn.solid {
+      background: transparent;
+      color: var(--color-strong);
+      border: none;
+    }
+
+    .btn.solid:hover {
+      background: #f0ebe4;
+    }
+
+    .btn.ghost {
+      background: transparent;
+    }
+
+    .btn-small {
+      padding: 8px 12px;
+      font-size: 0.95rem;
+    }
+
+    .btn-icon {
+      padding: 6px 10px;
+    }
+
+    .btn-add {
+      width: 100%;
+      border: none;
+      color: var(--color-muted);
+      background: transparent;
+    }
+
+    .btn-add:hover {
+      background: #f0ebe4;
+      color: var(--color-text);
+    }
+
+    .btn-add-block {
+      font-weight: 700;
+    }
+
+    .btn-add-inline {
+      width: auto;
+      padding: 8px 10px;
+    }
+
+    .block-actions-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-danger {
+      border-color: #d33643;
+      color: #d33643;
+    }
+
+    .btn-danger:hover {
+      background: rgba(211, 54, 67, 0.08);
+    }
+
+    /* ============================================================================
+       PREVIEW (VISTA PREVIA)
+       ============================================================================ */
+    .preview-container {
+      background: var(--color-surface);
+    }
+
+    .preview-section {
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .preview-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .preview-section h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .preview-section h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--color-muted);
+      margin-bottom: 8px;
+    }
+
+    .preview-section p {
+      color: var(--color-text);
+      margin-bottom: 10px;
+    }
+
+    .preview-block-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .preview-block-header h3 {
+      margin-bottom: 0;
+    }
+
+    /* Botón de toggle para párrafos desplegables */
+    .preview-toggle {
+      border: none;
+      background: transparent;
+      color: var(--color-muted);
+      padding: 0;
+      font-size: 0.9rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.2s ease;
+      transform: rotate(-90deg);
+    }
+
+    .preview-block:not(.is-collapsed) .preview-toggle {
+      transform: rotate(90deg);
+    }
+
+    .preview-toggle:hover {
+      opacity: 0.8;
+    }
+
+    /* Animación mejorada para párrafos desplegables */
+    .preview-paragraphs {
+      max-height: var(--preview-max-height, 9999px);
+      overflow: hidden;
+      opacity: 1;
+      transform: translateY(0);
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease,
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .preview-block.is-collapsed .preview-paragraphs {
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+    }
+
+    .preview-block+.preview-block {
+      margin-top: 12px;
+    }
+
+    /* Variable CSS para sangría de párrafos */
+    .preview-block {
+      --preview-paragraph-indent: 0;
+    }
+
+    .preview-paragraphs p {
+      margin-left: var(--preview-paragraph-indent);
+    }
+
+    /* ============================================================================
+       IMÁGENES Y LOGOS EN PREVIEW
+       ============================================================================ */
+    .preview-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .preview-image-item {
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: zoom-in;
+    }
+
+    .preview-image-thumb {
+      width: 100%;
+      display: block;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+    }
+
+    .preview-logos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .preview-logo {
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      background: var(--color-soft);
+      color: var(--color-muted);
+      font-size: 0.95rem;
+    }
+
+    /* ============================================================================
+       LIGHTBOX (MODAL DE IMÁGENES)
+       ============================================================================ */
+    .preview-lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 20;
+      padding: 20px;
+    }
+
+    .preview-lightbox.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .preview-lightbox-image {
+      max-width: min(92vw, 900px);
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ============================================================================
+       FOOTER
+       ============================================================================ */
+    .formatter-footer {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 32px 28px;
+      border-top: 1px solid var(--color-border);
+      background: var(--color-bg);
+    }
+
+    .footer-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-actions.footer-left {
+      justify-content: flex-start;
+    }
+
+    .footer-actions.footer-center {
+      justify-content: center;
+    }
+
+    .status-message {
+      min-height: 1.2em;
+      color: var(--color-muted);
+      justify-self: end;
+    }
+
+    .status-message.success {
+      color: #1f7a4c;
+    }
+
+    .status-message.error {
+      color: #c0392b;
+    }
+
+    .status-message.warning {
+      color: #c28418;
+    }
+
+    /* ============================================================================
+       RESPONSIVE (TABLET Y MÓVIL)
+       ============================================================================ */
+
+    /* Tablet */
+    @media (max-width: 1024px) {
+      .formatter-main {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-panel {
+        order: 2;
+      }
+    }
+
+    /* Móvil */
     @media (max-width: 768px) {
-      .formatter-header, .formatter-footer { padding-left: 20px; padding-right: 20px; }
-      .tabs { padding: 0 20px 14px; }
-      .formatter-main { padding: 20px; gap: 18px; }
-      .panel-header { flex-direction: column; align-items: flex-start; }
-      .formatter-footer { grid-template-columns: 1fr; justify-items: center; }
+
+      .formatter-header,
+      .formatter-footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .tabs {
+        padding: 0 20px 14px;
+      }
+
+      .formatter-main {
+        padding: 20px;
+        gap: 18px;
+      }
+
+      .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .formatter-footer {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+
       .footer-actions.footer-left,
-      .footer-actions.footer-center { justify-content: center; }
-      .status-message { justify-self: center; }
+      .footer-actions.footer-center {
+        justify-content: center;
+      }
+
+      .status-message {
+        justify-self: center;
+      }
+
+      /* OCULTAR SANGRÍA EN MÓVIL */
+      .preview-paragraphs p {
+        margin-left: 0 !important;
+      }
+
+      .preview-block {
+        --preview-paragraph-indent: 0 !important;
+      }
     }
   </style>
 </head>
+
 <body>
   <header class="formatter-header">
     <div class="title-block">
@@ -190,13 +853,16 @@
 
   <script>
     // ============================================================================
-    // storage.js (embebido)
+    // STORAGE - Gestión de datos y localStorage
     // ============================================================================
     const Storage = {
       STORAGE_KEY: 'safeamorx_content_data',
       META_KEY: 'safeamorx_content_meta',
       SCHEMA_VERSION: 2,
 
+      /**
+       * Obtiene la versión del schema almacenado
+       */
       getVersion() {
         try {
           const raw = localStorage.getItem(this.META_KEY);
@@ -208,6 +874,9 @@
         }
       },
 
+      /**
+       * Guarda datos en localStorage
+       */
       save(data) {
         try {
           localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
@@ -219,6 +888,9 @@
         }
       },
 
+      /**
+       * Carga datos desde localStorage
+       */
       load() {
         try {
           const data = localStorage.getItem(this.STORAGE_KEY);
@@ -230,6 +902,9 @@
         }
       },
 
+      /**
+       * Limpia localStorage
+       */
       clear() {
         try {
           localStorage.removeItem(this.STORAGE_KEY);
@@ -241,6 +916,9 @@
         }
       },
 
+      /**
+       * Exporta datos como archivo JSON
+       */
       export(data, filename = 'data.json') {
         try {
           const jsonString = JSON.stringify(data, null, 2);
@@ -260,6 +938,9 @@
         }
       },
 
+      /**
+       * Importa datos desde un archivo
+       */
       import(file) {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -281,16 +962,25 @@
         });
       },
 
+      /**
+       * Valida la estructura de datos
+       */
       validate(data) {
         const normalized = this.normalize(data);
         if (!normalized) return false;
         return ['about', 'booking', 'collabs', 'training'].every((category) => Array.isArray(normalized[category]));
       },
 
+      /**
+       * Retorna estructura vacía
+       */
       getEmptyStructure() {
         return { about: [], booking: [], collabs: [], training: [] };
       },
 
+      /**
+       * Copia datos al portapapeles
+       */
       async copyToClipboard(data) {
         try {
           const jsonString = JSON.stringify(data, null, 2);
@@ -302,6 +992,9 @@
         }
       },
 
+      /**
+       * Normaliza valores de sangría (0-50)
+       */
       normalizeIndentValue(value) {
         if (typeof value === 'number' && Number.isFinite(value)) {
           return Math.min(50, Math.max(0, value));
@@ -309,7 +1002,7 @@
         if (typeof value === 'string') {
           const trimmed = value.trim();
           if (!trimmed) return 0;
-          if (/^\d+(\.\d+)?%$/.test(trimmed) || /^\d+(\.\d+)?$/.test(trimmed)) {
+          if (/^\d+(\.\d+)?%?$/.test(trimmed)) {
             const parsed = Number.parseFloat(trimmed);
             if (Number.isFinite(parsed)) {
               return Math.min(50, Math.max(0, parsed));
@@ -319,9 +1012,16 @@
         return 0;
       },
 
+      /**
+       * Normaliza la estructura completa de datos
+       * SIMPLIFICADO: Ahora siempre respeta los valores del JSON sin merge complejo
+       */
       normalize(raw) {
         if (!raw || typeof raw !== 'object') return null;
+
         const data = JSON.parse(JSON.stringify(raw));
+
+        // Compatibilidad con nombres antiguos
         if (!data.collabs && Array.isArray(data.cv)) {
           data.collabs = data.cv;
         }
@@ -330,19 +1030,33 @@
         }
         if (data.cv) delete data.cv;
         if (data.curriculum) delete data.curriculum;
+
+        /**
+         * Normaliza una sección individual
+         */
         const normalizeSection = (section) => {
           if (!section || typeof section !== 'object') {
-            return { titulo: '', bloques: [{ subtitulo: '', texto: [], desplegable: false, sangria: 0 }], imagenes: [], logos: [] };
+            return {
+              titulo: '',
+              bloques: [{ subtitulo: '', texto: [], desplegable: false, sangria: 0 }],
+              imagenes: [],
+              logos: []
+            };
           }
+
           const normalized = { ...section };
           const sectionIndent = this.normalizeIndentValue(normalized.sangria);
           delete normalized.sangria;
+
+          // Normalizar imágenes
           normalized.imagenes = Array.isArray(normalized.imagenes)
             ? normalized.imagenes.map(image => ({
               src: typeof image.src === 'string' ? image.src : '',
               alt: typeof image.alt === 'string' ? image.alt : ''
             }))
             : [];
+
+          // Normalizar logos
           normalized.logos = Array.isArray(normalized.logos)
             ? normalized.logos.map(logo => ({
               src: typeof logo.src === 'string' ? logo.src : '',
@@ -350,31 +1064,47 @@
               alt: typeof logo.alt === 'string' ? logo.alt : ''
             }))
             : [];
+
+          // Normalizar bloques
           if (!Array.isArray(normalized.bloques)) {
+            // Convertir estructura antigua a bloques
             const subtitulo = typeof normalized.subtitulo === 'string' ? normalized.subtitulo : '';
             const texto = Array.isArray(normalized.texto) ? normalized.texto : [];
-            normalized.bloques = [{ subtitulo, texto, desplegable: false, sangria: sectionIndent }];
+            normalized.bloques = [{
+              subtitulo,
+              texto,
+              desplegable: false,
+              sangria: sectionIndent
+            }];
             delete normalized.subtitulo;
             delete normalized.texto;
           } else {
+            // Normalizar cada bloque
             normalized.bloques = normalized.bloques.map(block => ({
               subtitulo: typeof block.subtitulo === 'string' ? block.subtitulo : '',
               texto: Array.isArray(block.texto) ? block.texto : [],
               desplegable: typeof block.desplegable === 'boolean' ? block.desplegable : false,
               sangria: this.normalizeIndentValue(
-                (typeof block.sangria === 'number' || typeof block.sangria === 'string') ? block.sangria : sectionIndent
+                (block.sangria !== undefined && block.sangria !== null) ? block.sangria : sectionIndent
               )
             }));
           }
+
           return normalized;
         };
+
+        // Normalizar todas las categorías
         ['about', 'booking', 'collabs', 'training'].forEach((category) => {
           if (!Array.isArray(data[category])) data[category] = [];
           data[category] = data[category].map(normalizeSection);
         });
+
         return data;
       },
 
+      /**
+       * Carga data.json desde el repositorio
+       */
       async fetchFromRepo() {
         try {
           const response = await fetch('data.json', { cache: 'no-cache' });
@@ -389,17 +1119,23 @@
     };
 
     // ============================================================================
-    // preview.js (embebido)
+    // PREVIEW - Vista previa del contenido
     // ============================================================================
     const Preview = {
       container: null,
       lightbox: null,
       lightboxKeyHandlerAttached: false,
 
+      /**
+       * Inicializa el módulo de preview
+       */
       init() {
         this.container = document.getElementById('previewContainer');
       },
 
+      /**
+       * Renderiza el contenido de una categoría
+       */
       render(categoryData) {
         if (!this.container) return;
         this.container.innerHTML = '';
@@ -417,11 +1153,17 @@
         requestAnimationFrame(() => this.refreshExpandableHeights());
       },
 
+      /**
+       * Establece la altura máxima para animación de desplegables
+       */
       setExpandableHeight(wrapper) {
         if (!wrapper) return;
         wrapper.style.setProperty('--preview-max-height', `${wrapper.scrollHeight}px`);
       },
 
+      /**
+       * Actualiza todas las alturas de elementos desplegables
+       */
       refreshExpandableHeights() {
         if (!this.container) return;
         this.container.querySelectorAll('.preview-paragraphs').forEach((wrapper) => {
@@ -429,13 +1171,20 @@
         });
       },
 
+      /**
+       * Normaliza valor de sangría para CSS
+       */
       normalizeIndent(value) {
         const normalized = Storage.normalizeIndentValue(value);
         return normalized ? `${normalized}%` : '';
       },
 
+      /**
+       * Asegura que existe el lightbox
+       */
       ensureLightbox() {
         if (this.lightbox) return this.lightbox;
+
         const overlay = document.createElement('div');
         overlay.className = 'preview-lightbox';
         overlay.setAttribute('aria-hidden', 'true');
@@ -461,6 +1210,9 @@
         return overlay;
       },
 
+      /**
+       * Abre el lightbox con una imagen
+       */
       openLightbox(src, altText) {
         if (!src) return;
         const overlay = this.ensureLightbox();
@@ -471,6 +1223,9 @@
         overlay.setAttribute('aria-hidden', 'false');
       },
 
+      /**
+       * Cierra el lightbox
+       */
       closeLightbox() {
         if (!this.lightbox) return;
         const img = this.lightbox.querySelector('img');
@@ -480,9 +1235,13 @@
         this.lightbox.setAttribute('aria-hidden', 'true');
       },
 
+      /**
+       * Crea el elemento de preview para una sección
+       */
       createSectionPreview(section, index) {
         const div = document.createElement('div');
         div.className = 'preview-section';
+        div.dataset.sectionIndex = index;
 
         if (section.titulo) {
           const h2 = document.createElement('h2');
@@ -494,6 +1253,8 @@
         blocks.forEach((block, blockIndex) => {
           const blockWrapper = document.createElement('div');
           blockWrapper.className = 'preview-block';
+
+          // Aplicar sangría
           const blockIndent = this.normalizeIndent(block.sangria);
           if (blockIndent) {
             blockWrapper.style.setProperty('--preview-paragraph-indent', blockIndent);
@@ -505,6 +1266,8 @@
 
           let hasParagraphs = false;
           let hasHeader = false;
+
+          // Crear párrafos
           block.texto.forEach(parrafo => {
             if (typeof parrafo === 'string' && parrafo.trim()) {
               const p = document.createElement('p');
@@ -514,6 +1277,7 @@
             }
           });
 
+          // Crear header con subtítulo y toggle si es desplegable
           if (block.subtitulo && block.subtitulo.trim()) {
             const header = document.createElement('div');
             header.className = 'preview-block-header';
@@ -553,6 +1317,7 @@
           }
         });
 
+        // Agregar imágenes
         if (section.imagenes && Array.isArray(section.imagenes) && section.imagenes.length > 0) {
           const imagesDiv = document.createElement('div');
           imagesDiv.className = 'preview-images';
@@ -580,6 +1345,7 @@
           }
         }
 
+        // Agregar logos
         if (section.logos && Array.isArray(section.logos) && section.logos.length > 0) {
           const logosDiv = document.createElement('div');
           logosDiv.className = 'preview-logos';
@@ -595,9 +1361,13 @@
 
           div.appendChild(logosDiv);
         }
+
         return div;
       },
 
+      /**
+       * Normaliza bloques de una sección
+       */
       normalizeBlocks(section) {
         if (Array.isArray(section.bloques)) {
           return section.bloques.map(block => ({
@@ -607,7 +1377,7 @@
               : (typeof block.texto === 'string' ? [block.texto] : []),
             desplegable: typeof block.desplegable === 'boolean' ? block.desplegable : false,
             sangria: Storage.normalizeIndentValue(
-              (typeof block.sangria === 'number' || typeof block.sangria === 'string') ? block.sangria : 0
+              (block.sangria !== undefined && block.sangria !== null) ? block.sangria : 0
             )
           }));
         }
@@ -617,27 +1387,41 @@
           ? section.texto
           : (typeof section.texto === 'string' ? [section.texto] : []);
 
-        return [{ subtitulo, texto, desplegable: false, sangria: Storage.normalizeIndentValue(section.sangria) }];
+        return [{
+          subtitulo,
+          texto,
+          desplegable: false,
+          sangria: Storage.normalizeIndentValue(section.sangria)
+        }];
       },
 
+      /**
+       * Limpia el contenedor
+       */
       clear() {
         if (this.container) this.container.innerHTML = '';
       }
     };
 
     // ============================================================================
-    // editor.js (embebido)
+    // EDITOR - Gestión de la interfaz de edición
     // ============================================================================
     const Editor = {
       container: null,
       currentCategory: 'about',
       data: null,
 
+      /**
+       * Inicializa el editor
+       */
       init(data) {
         this.container = document.getElementById('sectionsContainer');
         this.data = data || Storage.getEmptyStructure();
       },
 
+      /**
+       * Renderiza una categoría completa
+       */
       renderCategory(category) {
         this.currentCategory = category;
         this.container.innerHTML = '';
@@ -654,11 +1438,15 @@
         });
       },
 
+      /**
+       * Crea una tarjeta de sección
+       */
       createSectionCard(section, index) {
         const card = document.createElement('div');
         card.className = 'section-card';
         card.dataset.index = index;
 
+        // Header con número y acciones
         const header = document.createElement('div');
         header.className = 'section-header';
         const label = document.createElement('span');
@@ -669,6 +1457,7 @@
         const actions = document.createElement('div');
         actions.className = 'section-actions';
 
+        // Botón mover arriba
         const moveUpBtn = document.createElement('button');
         moveUpBtn.className = 'btn btn-icon btn-small';
         moveUpBtn.title = 'Mover arriba';
@@ -677,6 +1466,7 @@
         moveUpBtn.addEventListener('click', () => this.moveSection(index, -1));
         actions.appendChild(moveUpBtn);
 
+        // Botón mover abajo
         const moveDownBtn = document.createElement('button');
         moveDownBtn.className = 'btn btn-icon btn-small';
         moveDownBtn.title = 'Mover abajo';
@@ -685,6 +1475,7 @@
         moveDownBtn.addEventListener('click', () => this.moveSection(index, 1));
         actions.appendChild(moveDownBtn);
 
+        // Botón eliminar
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'btn btn-icon btn-small btn-danger';
         deleteBtn.title = 'Eliminar sección';
@@ -695,6 +1486,7 @@
         header.appendChild(actions);
         card.appendChild(header);
 
+        // Campo título
         card.appendChild(
           this.createFormGroup(
             '',
@@ -705,15 +1497,22 @@
             'Título'
           )
         );
+
+        // Bloques, imágenes y logos
         card.appendChild(this.createBlocksGroup(section, index));
         card.appendChild(this.createImagesGroup(section.imagenes || [], index));
         card.appendChild(this.createLogosGroup(section.logos || [], index));
+
         return card;
       },
 
+      /**
+       * Crea un grupo de formulario (input o textarea)
+       */
       createFormGroup(label, type, value, onChange, optional = false, placeholder = '') {
         const group = document.createElement('div');
         group.className = 'form-group';
+
         const labelEl = document.createElement('label');
         labelEl.className = 'form-label' + (optional ? ' optional' : '');
         labelEl.textContent = label;
@@ -726,13 +1525,20 @@
         input.value = value;
         input.addEventListener('input', (e) => onChange(e.target.value));
         group.appendChild(input);
+
         return group;
       },
 
+      /**
+       * Normaliza valor de sangría
+       */
       normalizeIndentValue(value) {
         return Storage.normalizeIndentValue(value);
       },
 
+      /**
+       * Crea control de sangría (slider)
+       */
       createIndentControl(value, onChange) {
         const control = document.createElement('label');
         control.className = 'indent-control';
@@ -766,6 +1572,9 @@
         return control;
       },
 
+      /**
+       * Crea grupo de toggle (checkbox)
+       */
       createToggleGroup(label, checked, onChange) {
         const group = document.createElement('div');
         group.className = 'form-group';
@@ -787,6 +1596,9 @@
         return group;
       },
 
+      /**
+       * Crea grupo de bloques
+       */
       createBlocksGroup(section, sectionIndex) {
         const blocks = this.normalizeBlocks(section);
         const group = document.createElement('div');
@@ -808,17 +1620,22 @@
         return group;
       },
 
+      /**
+       * Crea tarjeta de bloque individual
+       */
       createBlockCard(block, sectionIndex, blockIndex, totalBlocks) {
         const card = document.createElement('div');
         card.className = 'block-card';
 
+        // Header del bloque
         const header = document.createElement('div');
         header.className = 'block-header';
         const label = document.createElement('span');
         label.className = 'block-label';
-        label.textContent = `Bloque +${blockIndex + 1}`;
+        label.textContent = `Bloque ${blockIndex + 1}`;
         header.appendChild(label);
 
+        // Control de sangría
         header.appendChild(
           this.createIndentControl(
             block.sangria || 0,
@@ -826,6 +1643,7 @@
           )
         );
 
+        // Botón eliminar bloque
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'btn btn-icon btn-small';
         deleteBtn.title = 'Eliminar bloque';
@@ -834,6 +1652,7 @@
         header.appendChild(deleteBtn);
         card.appendChild(header);
 
+        // Campo subtítulo
         card.appendChild(
           this.createFormGroup(
             '',
@@ -845,6 +1664,7 @@
           )
         );
 
+        // Toggle desplegable
         card.appendChild(
           this.createToggleGroup(
             'Párrafos desplegables',
@@ -853,8 +1673,10 @@
           )
         );
 
+        // Párrafos
         card.appendChild(this.createParagraphsGroup(block.texto || [], sectionIndex, blockIndex));
 
+        // Botones de acción
         const actionsRow = document.createElement('div');
         actionsRow.className = 'block-actions-row';
 
@@ -864,6 +1686,7 @@
         addParagraphBtn.onclick = () => this.addParagraph(sectionIndex, blockIndex);
         actionsRow.appendChild(addParagraphBtn);
 
+        // Solo en el último bloque mostrar botones de imagen y logo
         if (blockIndex === totalBlocks - 1) {
           const addImageBtn = document.createElement('button');
           addImageBtn.className = 'btn btn-add btn-add-inline';
@@ -879,10 +1702,12 @@
         }
 
         card.appendChild(actionsRow);
-
         return card;
       },
 
+      /**
+       * Crea grupo de párrafos
+       */
       createParagraphsGroup(paragraphs, sectionIndex, blockIndex) {
         const group = document.createElement('div');
         group.className = 'form-group';
@@ -897,9 +1722,13 @@
         return group;
       },
 
+      /**
+       * Crea item de párrafo individual
+       */
       createParagraphItem(paragraph, sectionIndex, blockIndex, pIndex, totalParagraphs) {
         const item = document.createElement('div');
         item.className = 'paragraph-item';
+
         const header = document.createElement('div');
         header.className = 'paragraph-header';
         const label = document.createElement('span');
@@ -910,6 +1739,7 @@
         const actions = document.createElement('div');
         actions.className = 'paragraph-actions';
 
+        // Botón mover arriba
         const moveUpBtn = document.createElement('button');
         moveUpBtn.className = 'btn btn-icon btn-small';
         moveUpBtn.title = 'Mover párrafo arriba';
@@ -918,6 +1748,7 @@
         moveUpBtn.addEventListener('click', () => this.moveParagraph(sectionIndex, blockIndex, pIndex, -1));
         actions.appendChild(moveUpBtn);
 
+        // Botón mover abajo
         const moveDownBtn = document.createElement('button');
         moveDownBtn.className = 'btn btn-icon btn-small';
         moveDownBtn.title = 'Mover párrafo abajo';
@@ -926,6 +1757,7 @@
         moveDownBtn.addEventListener('click', () => this.moveParagraph(sectionIndex, blockIndex, pIndex, 1));
         actions.appendChild(moveDownBtn);
 
+        // Botón eliminar
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'btn btn-icon btn-small';
         deleteBtn.title = 'Eliminar párrafo';
@@ -936,17 +1768,24 @@
         header.appendChild(actions);
         item.appendChild(header);
 
+        // Textarea del párrafo
         const textarea = document.createElement('textarea');
         textarea.className = 'form-textarea';
         textarea.value = paragraph;
         textarea.addEventListener('input', (e) => this.updateParagraph(sectionIndex, blockIndex, pIndex, e.target.value));
         item.appendChild(textarea);
+
         return item;
       },
 
+      /**
+       * Crea grupo de imágenes
+       */
       createImagesGroup(images, sectionIndex) {
         const group = document.createElement('div');
         group.className = 'form-group';
+
+        if (!images || images.length === 0) return group;
 
         const list = document.createElement('div');
         list.className = 'image-list';
@@ -958,9 +1797,13 @@
         return group;
       },
 
+      /**
+       * Crea item de imagen individual
+       */
       createImageItem(image, sectionIndex, iIndex) {
         const item = document.createElement('div');
         item.className = 'image-item';
+
         const header = document.createElement('div');
         header.className = 'image-header';
         header.innerHTML = `
@@ -992,9 +1835,14 @@
         return item;
       },
 
+      /**
+       * Crea grupo de logos
+       */
       createLogosGroup(logos, sectionIndex) {
         const group = document.createElement('div');
         group.className = 'form-group';
+
+        if (!logos || logos.length === 0) return group;
 
         const list = document.createElement('div');
         list.className = 'logo-list';
@@ -1006,9 +1854,13 @@
         return group;
       },
 
+      /**
+       * Crea item de logo individual
+       */
       createLogoItem(logo, sectionIndex, lIndex) {
         const item = document.createElement('div');
         item.className = 'logo-item';
+
         const header = document.createElement('div');
         header.className = 'logo-header';
         header.innerHTML = `
@@ -1048,11 +1900,17 @@
         return item;
       },
 
+      /**
+       * Actualiza campo de una sección
+       */
       updateSection(index, field, value) {
         this.data[this.currentCategory][index][field] = value;
         this.triggerUpdate();
       },
 
+      /**
+       * Actualiza campo de un logo
+       */
       updateLogo(sectionIndex, lIndex, field, value) {
         if (!this.data[this.currentCategory][sectionIndex].logos) {
           this.data[this.currentCategory][sectionIndex].logos = [];
@@ -1061,6 +1919,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Actualiza campo de una imagen
+       */
       updateImage(sectionIndex, iIndex, field, value) {
         if (!this.data[this.currentCategory][sectionIndex].imagenes) {
           this.data[this.currentCategory][sectionIndex].imagenes = [];
@@ -1069,8 +1930,12 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Normaliza bloques de una sección
+       */
       normalizeBlocks(section) {
         const fallbackIndent = this.normalizeIndentValue(section.sangria);
+
         if (!Array.isArray(section.bloques) || section.bloques.length === 0) {
           const subtitulo = typeof section.subtitulo === 'string' ? section.subtitulo : '';
           const texto = Array.isArray(section.texto) ? section.texto : [];
@@ -1084,7 +1949,7 @@
           texto: Array.isArray(block.texto) ? block.texto : [],
           desplegable: typeof block.desplegable === 'boolean' ? block.desplegable : false,
           sangria: this.normalizeIndentValue(
-            (typeof block.sangria === 'number' || typeof block.sangria === 'string') ? block.sangria : fallbackIndent
+            (block.sangria !== undefined && block.sangria !== null) ? block.sangria : fallbackIndent
           )
         }));
 
@@ -1095,6 +1960,9 @@
         return section.bloques;
       },
 
+      /**
+       * Actualiza subtítulo de un bloque
+       */
       updateSubtitle(sectionIndex, blockIndex, value) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -1102,6 +1970,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Actualiza toggle desplegable de un bloque
+       */
       updateBlockToggle(sectionIndex, blockIndex, value) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -1109,6 +1980,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Actualiza sangría de un bloque
+       */
       updateBlockIndent(sectionIndex, blockIndex, value) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -1116,6 +1990,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Actualiza texto de un párrafo
+       */
       updateParagraph(sectionIndex, blockIndex, pIndex, value) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -1123,13 +2000,24 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Añade una nueva sección
+       */
       addSection() {
-        const newSection = { titulo: '', bloques: [{ subtitulo: '', texto: [], desplegable: false, sangria: 0 }], imagenes: [], logos: [] };
+        const newSection = {
+          titulo: '',
+          bloques: [{ subtitulo: '', texto: [], desplegable: false, sangria: 0 }],
+          imagenes: [],
+          logos: []
+        };
         this.data[this.currentCategory].push(newSection);
         this.renderCategory(this.currentCategory);
         this.triggerUpdate();
       },
 
+      /**
+       * Elimina una sección
+       */
       deleteSection(index) {
         if (confirm('¿Estás seguro de que quieres eliminar esta sección?')) {
           this.data[this.currentCategory].splice(index, 1);
@@ -1138,6 +2026,9 @@
         }
       },
 
+      /**
+       * Mueve una sección
+       */
       moveSection(index, direction) {
         const newIndex = index + direction;
         if (newIndex < 0 || newIndex >= this.data[this.currentCategory].length) return;
@@ -1147,6 +2038,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Añade un bloque
+       */
       addBlock(sectionIndex, afterBlockIndex) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -1156,6 +2050,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Elimina un bloque
+       */
       deleteBlock(sectionIndex, blockIndex) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -1164,6 +2061,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Añade un párrafo
+       */
       addParagraph(sectionIndex, blockIndex) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -1172,6 +2072,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Elimina un párrafo
+       */
       deleteParagraph(sectionIndex, blockIndex, pIndex) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -1180,6 +2083,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Mueve un párrafo
+       */
       moveParagraph(sectionIndex, blockIndex, pIndex, direction) {
         const section = this.data[this.currentCategory][sectionIndex];
         const blocks = this.normalizeBlocks(section);
@@ -1191,6 +2097,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Añade un logo
+       */
       addLogo(sectionIndex) {
         if (!this.data[this.currentCategory][sectionIndex].logos) {
           this.data[this.currentCategory][sectionIndex].logos = [];
@@ -1200,6 +2109,9 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Añade una imagen
+       */
       addImage(sectionIndex) {
         if (!this.data[this.currentCategory][sectionIndex].imagenes) {
           this.data[this.currentCategory][sectionIndex].imagenes = [];
@@ -1209,40 +2121,54 @@
         this.triggerUpdate();
       },
 
+      /**
+       * Elimina un logo
+       */
       deleteLogo(sectionIndex, lIndex) {
         this.data[this.currentCategory][sectionIndex].logos.splice(lIndex, 1);
         this.renderCategory(this.currentCategory);
         this.triggerUpdate();
       },
 
+      /**
+       * Elimina una imagen
+       */
       deleteImage(sectionIndex, iIndex) {
         this.data[this.currentCategory][sectionIndex].imagenes.splice(iIndex, 1);
         this.renderCategory(this.currentCategory);
         this.triggerUpdate();
       },
 
+      /**
+       * Dispara actualización de preview y storage
+       */
       triggerUpdate() {
-        if (window.Formatter && window.Formatter.onDataChange) window.Formatter.onDataChange();
+        if (window.Formatter && window.Formatter.onDataChange) {
+          window.Formatter.onDataChange();
+        }
       }
     };
 
     // ============================================================================
-    // formatter.js (embebido)
+    // FORMATTER - Controlador principal
     // ============================================================================
     const Formatter = {
       currentCategory: 'about',
       data: null,
       statusTimer: null,
 
+      /**
+       * Inicializa la aplicación
+       * SIMPLIFICADO: Ya no hace merge complejo, simplemente carga desde repo o localStorage
+       */
       async init() {
         const stored = Storage.load();
-        const storedRaw = localStorage.getItem(Storage.STORAGE_KEY);
-        const storedHasSangria = storedRaw ? storedRaw.includes('"sangria"') : false;
-        const storedHasDesplegable = storedRaw ? storedRaw.includes('"desplegable"') : false;
-        const storedVersion = Storage.getVersion();
-        const isLegacyStorage = stored && storedVersion < Storage.SCHEMA_VERSION;
         let repoData = null;
-        if (!stored) this.showStatus('Cargando data.json del repo...', '');
+
+        // Intentar cargar data.json del repositorio
+        if (!stored) {
+          this.showStatus('Cargando data.json del repo...', '');
+        }
 
         try {
           repoData = await Storage.fetchFromRepo();
@@ -1251,86 +2177,32 @@
           this.showStatus('No se pudo leer data.json del repo', 'error');
         }
 
-        const normalizedStored = this.normalizeData(stored);
-        const normalizedRepo = this.normalizeData(repoData);
-        if (normalizedStored && normalizedRepo) {
-          this.data = this.mergeMissingBlockFields(normalizedStored, normalizedRepo, {
-            preferRepoSangria: isLegacyStorage || !storedHasSangria,
-            preferRepoDesplegable: isLegacyStorage || !storedHasDesplegable
-          });
+        // LÓGICA SIMPLIFICADA: Priorizar localStorage si existe, sino usar repo
+        if (stored) {
+          this.data = stored;
+          this.showStatus('Datos recuperados del guardado local', 'success');
+        } else if (repoData) {
+          this.data = repoData;
+          this.showStatus('data.json cargado automáticamente', 'success');
           Storage.save(this.data);
         } else {
-          this.data = normalizedStored || normalizedRepo || Storage.getEmptyStructure();
+          this.data = Storage.getEmptyStructure();
+          this.showStatus('Arrancamos con un esquema vacío', 'warning');
         }
 
+        // Inicializar módulos
         Editor.init(this.data);
         Preview.init();
         this.setupEventListeners();
         this.switchCategory(this.currentCategory);
         this.updateCounts();
-
-        if (stored) {
-          this.showStatus('Datos recuperados del guardado local', 'success');
-        } else if (repoData) {
-          this.showStatus('data.json cargado automáticamente', 'success');
-          Storage.save(this.data);
-        } else {
-          this.showStatus('Arrancamos con un esquema vacío', 'warning');
-        }
       },
 
-      normalizeData(raw) {
-        return Storage.normalize(raw);
-      },
-
-      mergeMissingBlockFields(stored, repo, options = {}) {
-        if (!stored || !repo) return stored || repo;
-        const { preferRepoSangria = false, preferRepoDesplegable = false } = options;
-        const merged = JSON.parse(JSON.stringify(stored));
-        const categories = ['about', 'booking', 'collabs', 'training'];
-        categories.forEach((category) => {
-          const storedSections = Array.isArray(merged[category]) ? merged[category] : [];
-          const repoSections = Array.isArray(repo[category]) ? repo[category] : [];
-
-          repoSections.forEach((repoSection, sectionIndex) => {
-            if (!storedSections[sectionIndex]) {
-              storedSections[sectionIndex] = repoSection;
-              return;
-            }
-            const storedSection = storedSections[sectionIndex];
-            if (!Array.isArray(storedSection.bloques) && Array.isArray(repoSection.bloques)) {
-              storedSection.bloques = repoSection.bloques;
-              return;
-            }
-            if (!Array.isArray(storedSection.bloques) || !Array.isArray(repoSection.bloques)) return;
-
-            repoSection.bloques.forEach((repoBlock, blockIndex) => {
-              if (!storedSection.bloques[blockIndex]) {
-                storedSection.bloques[blockIndex] = repoBlock;
-                return;
-              }
-              const storedBlock = storedSection.bloques[blockIndex];
-              if (preferRepoDesplegable && repoBlock.desplegable !== undefined) {
-                storedBlock.desplegable = repoBlock.desplegable;
-              } else if (storedBlock.desplegable === undefined && repoBlock.desplegable !== undefined) {
-                storedBlock.desplegable = repoBlock.desplegable;
-              }
-
-              if (preferRepoSangria && repoBlock.sangria !== undefined) {
-                storedBlock.sangria = repoBlock.sangria;
-              } else if (storedBlock.sangria === undefined && repoBlock.sangria !== undefined) {
-                storedBlock.sangria = repoBlock.sangria;
-              }
-            });
-          });
-
-          merged[category] = storedSections;
-        });
-
-        return merged;
-      },
-
+      /**
+       * Configura event listeners
+       */
       setupEventListeners() {
+        // Tabs de categorías
         document.querySelectorAll('.tab').forEach(tab => {
           tab.addEventListener('click', (e) => {
             const category = e.currentTarget.dataset.category;
@@ -1338,34 +2210,56 @@
           });
         });
 
+        // Botón añadir sección
         document.getElementById('addSectionBtn').addEventListener('click', () => {
           Editor.addSection();
           this.updateCounts();
         });
 
+        // Botones del footer
         document.getElementById('saveBtn').addEventListener('click', () => this.saveProgress());
         document.getElementById('downloadBtn').addEventListener('click', () => this.downloadData());
+
         const resetLocalBtn = document.getElementById('resetLocalBtn');
-        if (resetLocalBtn) resetLocalBtn.addEventListener('click', () => this.clearLocalAndReload());
+        if (resetLocalBtn) {
+          resetLocalBtn.addEventListener('click', () => this.clearLocalAndReload());
+        }
 
         const copyBtn = document.getElementById('copyJsonBtn');
-        if (copyBtn) copyBtn.addEventListener('click', () => this.copyJson());
+        if (copyBtn) {
+          copyBtn.addEventListener('click', () => this.copyJson());
+        }
       },
 
+      /**
+       * Cambia de categoría
+       */
       switchCategory(category) {
         this.currentCategory = category;
+
+        // Actualizar tabs activos
         document.querySelectorAll('.tab').forEach(tab => {
           tab.classList.toggle('active', tab.dataset.category === category);
         });
 
-        const categoryTitles = { about: 'About', booking: 'Booking', collabs: 'Collabs', training: 'Training' };
+        // Actualizar título
+        const categoryTitles = {
+          about: 'About',
+          booking: 'Booking',
+          collabs: 'Collabs',
+          training: 'Training'
+        };
         document.getElementById('categoryTitle').textContent = categoryTitles[category] || category;
 
+        // Renderizar contenido
         if (!this.data[category]) this.data[category] = [];
         Editor.renderCategory(category);
         Preview.render(this.data[category]);
       },
 
+      /**
+       * Actualiza contadores de secciones
+       */
       updateCounts() {
         ['about', 'booking', 'collabs', 'training'].forEach(category => {
           const count = this.data[category] ? this.data[category].length : 0;
@@ -1374,49 +2268,67 @@
         });
       },
 
+      /**
+       * Callback cuando cambian los datos
+       */
       onDataChange() {
         Preview.render(this.data[this.currentCategory]);
         this.updateCounts();
         Storage.save(this.data);
       },
 
+      /**
+       * Guarda progreso en localStorage
+       */
       saveProgress() {
         const success = Storage.save(this.data);
-        this.showStatus(success ? 'Progreso guardado en este navegador' : 'No se pudo guardar el progreso', success ? 'success' : 'error');
+        this.showStatus(
+          success ? 'Progreso guardado en este navegador' : 'No se pudo guardar el progreso',
+          success ? 'success' : 'error'
+        );
       },
 
+      /**
+       * Descarga data.json
+       */
       downloadData() {
         const success = Storage.export(this.data, 'data.json');
-        this.showStatus(success ? 'Descarga lista' : 'No se pudo generar el JSON', success ? 'success' : 'error');
+        this.showStatus(
+          success ? 'Descarga lista' : 'No se pudo generar el JSON',
+          success ? 'success' : 'error'
+        );
       },
 
+      /**
+       * Copia JSON al portapapeles
+       */
       async copyJson() {
         const success = await Storage.copyToClipboard(this.data);
-        this.showStatus(success ? 'JSON copiado al portapapeles' : 'No se pudo copiar el JSON', success ? 'success' : 'error');
+        this.showStatus(
+          success ? 'JSON copiado al portapapeles' : 'No se pudo copiar el JSON',
+          success ? 'success' : 'error'
+        );
       },
 
-      resetData() {
-        if (confirm('¿Quieres volver al data.json limpio? Se perderán los cambios sin guardar.')) {
-          this.data = Storage.getEmptyStructure();
-          Editor.data = this.data;
-          Storage.clear();
-          this.switchCategory(this.currentCategory);
-          this.updateCounts();
-          this.showStatus('Contenido reseteado', 'success');
-        }
-      },
-
+      /**
+       * Limpia localStorage y recarga
+       */
       clearLocalAndReload() {
-        if (!confirm('Se borrara el cache local y se recargara data.json. Continuar?')) return;
+        if (!confirm('Se borrará el cache local y se recargará data.json. ¿Continuar?')) return;
         Storage.clear();
         location.reload();
       },
 
+      /**
+       * Muestra mensaje de estado
+       */
       showStatus(message, type = '') {
         const statusEl = document.getElementById('statusMessage');
         if (!statusEl) return;
+
         statusEl.textContent = message;
         statusEl.className = 'status-message ' + type;
+
         clearTimeout(this.statusTimer);
         this.statusTimer = setTimeout(() => {
           statusEl.textContent = '';
@@ -1425,7 +2337,9 @@
       }
     };
 
+    // Iniciar cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', () => Formatter.init());
   </script>
 </body>
+
 </html>
