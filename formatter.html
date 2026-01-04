@@ -4,9 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Safe Amorx · editor de contenido</title>
+  <title>EDITOR DE CONTENIDO</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" href="assets/images/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ============================================================================
@@ -574,9 +575,9 @@
     .preview-toggle {
       border: none;
       background: transparent;
-      color: var(--color-muted);
+      color: var(--color-strong);
       padding: 0;
-      font-size: 0.9rem;
+      font-size: 1rem;
       line-height: 1;
       cursor: pointer;
       transition: transform 0.3s ease, opacity 0.2s ease;
@@ -620,6 +621,21 @@
 
     .preview-paragraphs p {
       margin-left: var(--preview-paragraph-indent);
+    }
+
+    .preview-block[style*="--preview-paragraph-indent"] .preview-paragraphs {
+      position: relative;
+    }
+
+    .preview-block[style*="--preview-paragraph-indent"] .preview-paragraphs::before {
+      content: "";
+      position: absolute;
+      left: max(calc(var(--preview-paragraph-indent) - 4px), 0px);
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: var(--color-border);
+      pointer-events: none;
     }
 
     /* ============================================================================
@@ -796,6 +812,10 @@
 
       .preview-block {
         --preview-paragraph-indent: 0 !important;
+      }
+
+      .preview-block[style*="--preview-paragraph-indent"] .preview-paragraphs::before {
+        display: none;
       }
     }
   </style>
