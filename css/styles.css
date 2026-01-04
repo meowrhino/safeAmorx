@@ -612,7 +612,7 @@ body.content-page {
   font-size: clamp(1.2rem, 2.8vw, 1.7rem);
   color: var(--map-text-color);
   text-decoration: none;
-  padding: 0 0 2rem;
+  padding: 0 0 5rem;
   position: absolute;
   left: 50%;
   bottom: -50dvh;
@@ -649,10 +649,10 @@ body.content-page {
   right: 50%;
   bottom: -50dvh;
   transform: translate(50%, 0);
-  padding: 0 0 0.8rem;
+  padding: 0 0 3rem;
   font-family: var(--font-paragraphs);
   font-size: clamp(0.75rem, 1.8vw, 0.95rem);
-  color: var(--map-line-color);
+  color: white;
   text-decoration: none;
   letter-spacing: 0.02em;
   opacity: 0.8;
